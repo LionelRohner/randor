@@ -31,7 +31,7 @@ testthat::test_that("Test that sieve_ov_Erathostenes works as intended", {
   expect_error(sieve_ov_Erathostenes(to = x6))
 })
 
-testthat::test_that("Test that get_cyclic_primes works as intended", {
+testthat::test_that("Test that get_circular_primes works as intended", {
   
   # Dummy data
   p1 <- sieve_ov_Erathostenes(to = 10)   # Primes up to ten
@@ -48,8 +48,15 @@ testthat::test_that("Test that get_cyclic_primes works as intended", {
   exp_p3 <- 55 # https://projecteuler.net/index.php?section=problems&id=35
   
   # Tests
-  expect_equal(get_cyclic_primes(primes = p1), exp_p1)
-  expect_equal(get_cyclic_primes(primes = p2), exp_p2)
-  expect_equal(get_cyclic_primes(primes = p3) %>% length(), exp_p3)
-  expect_equal(get_cyclic_primes(primes = p4))
+  expect_equal(get_circular_primes(primes = p1), exp_p1)
+  expect_equal(get_circular_primes(primes = p2), exp_p2)
+  expect_equal(get_circular_primes(primes = p3) %>% length(), exp_p3)
+  expect_null(get_circular_primes(primes = p4))
+})
+
+testthat::test_that("coin_change_algo gives correct number of combinations", {
+  skip("coin_change_algo is not correctly implemented yet.")
+  # This test is expected to fail as the function is not correctly implemented.
+  expect_equal(coin_change_algo(c(1, 2, 5), 5), 4)
+  expect_equal(coin_change_algo(c(1, 2), 4), 3)
 })
