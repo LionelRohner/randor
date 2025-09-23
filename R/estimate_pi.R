@@ -103,9 +103,19 @@ beta_mom <- function(x) {
   m_x <- mean(x, na.rm = TRUE)
   s_x <- sd(x, na.rm = TRUE)
   
+  if (s_x == 0) {
+    # Cannot estimate parameters if sd is 0, return some defaults
+    return(list(shape1 = 1, shape2 = 1))
+  }
+
   alpha <- m_x*((m_x*(1 - m_x)/s_x^2) - 1)
   beta <- (1 - m_x)*((m_x*(1 - m_x)/s_x^2) - 1)
   
+  # Check for negative or non-finite values and return defaults if so
+  if (!is.finite(alpha) || !is.finite(beta) || alpha <= 0 || beta <= 0) {
+    return(list(shape1 = 1, shape2 = 1))
+  }
+
   return(list(shape1 = alpha, shape2 = beta))
   
 }
@@ -453,7 +463,7 @@ n = 1e6
 
 test <- benchmark("empirical" = {estimate_pi_empirical(n)},
                   "resampled" = {estimate_pi_resampled(n)},
-                  "MCMC"      = {MCMC_Pi(nIter = 1e5)}
+                  "MCMC"      = {MCMC_Pi(nIter = 1e5)},
                   replications = 10)
 
 test$meanTime <- test$elapsed/test$replications
