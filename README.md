@@ -46,9 +46,9 @@ The functions in this repository are grouped into the following categories:
 The idea is that the polynomials of any degree can be described as a matrix-vector multiplication. More precisely, a matrix ($\mathbf{D}$) representing the differentiation of any terms of a polynomial is premultiplied by the vector ($\mathbf{p}$) describing the terms of the polynomial.
 
 **Differentiation Matrix:**
-$$
+```math
 \mathbf{D}=\frac{\mathbf{d}}{\mathbf{dx}}=\begin{bmatrix} 0 & 1 & 0 & 0 & 0 & \cdots \\ 0 & 0 & 2 & 0 & 0 & \cdots \\ 0 & 0 & 0 & 3 & 0 & \cdots \\ 0 & 0 & 0 & 0 & 4 & \cdots \\ 0 & 0 & 0 & 0 & 0 & \cdots \\ \vdots & \vdots & \vdots & \vdots & \ddots \end{bmatrix}
-$$
+```
 
 #### Example
 
