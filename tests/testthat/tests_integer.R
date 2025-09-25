@@ -6,7 +6,6 @@ source("lib/integers.R", encoding = "UTF-8")
 # Unit Tests --------------------------------------------------------------
 
 testthat::test_that("Test that get_digits works as intended", {
-
   # Dummy data
   x1 <- 1
   x2 <- 12
@@ -15,7 +14,7 @@ testthat::test_that("Test that get_digits works as intended", {
   x5 <- 6.1
   x6 <- 0
   x7 <- 8 # Test with base 2
-  
+
   # Expected results
   exp_x1 <- 1
   exp_x2 <- 2
@@ -24,7 +23,7 @@ testthat::test_that("Test that get_digits works as intended", {
   exp_x5 <- 1
   exp_x6 <- -Inf
   exp_x7 <- 4 # 8 in base 2 is 1000
-  
+
   # Tests
   actual_x1 <- get_digits(x = x1)
   expect_equal(actual_x1, exp_x1)
@@ -48,7 +47,6 @@ testthat::test_that("Test that get_digits works as intended", {
 })
 
 testthat::test_that("Test that get_powers_of_ten works as intended", {
-  
   # Dummy data
   x1 <- 0
   x2 <- 1
@@ -56,15 +54,15 @@ testthat::test_that("Test that get_powers_of_ten works as intended", {
   x4 <- -1
   x5 <- 3
   x6 <- 7
-  
+
   # Expected results
   # x1 should throw an error
   exp_x2 <- c(10)
-  exp_x3 <- c(1e1,1e2,1e3,1e4,1e5,1e6)
+  exp_x3 <- c(1e1, 1e2, 1e3, 1e4, 1e5, 1e6)
   # x4 should throw an error
-  exp_x5 <- c(1,10,100,1000)
+  exp_x5 <- c(1, 10, 100, 1000)
   exp_x6 <- 1e7
-  
+
   # Tests
   expect_error(get_powers_of_ten(ndigits = x1))
 
@@ -85,20 +83,24 @@ testthat::test_that("Test that get_powers_of_ten works as intended", {
 
 
 testthat::test_that("Test that concatenate_math works as intended", {
-  
   # Dummy data
-  x1 <- 1; y1 <- 2
-  x2 <- 12; y2 <- 345678
-  x3 <- 10; y3 <- 30
-  x4 <- 0; y4 <- 1
-  x5 <- 1; y5 <- 0
-  
+  x1 <- 1
+  y1 <- 2
+  x2 <- 12
+  y2 <- 345678
+  x3 <- 10
+  y3 <- 30
+  x4 <- 0
+  y4 <- 1
+  x5 <- 1
+  y5 <- 0
+
   # Expected
   exp_1 <- 12
   exp_2 <- 12345678
   exp_3 <- 1030
   exp_4 <- 1
-  
+
   # Test
   actual_1 <- concatenate_math(x = x1, y = y1)
   expect_equal(actual_1, exp_1)
@@ -116,17 +118,16 @@ testthat::test_that("Test that concatenate_math works as intended", {
 })
 
 testthat::test_that("Test that transform_to_base_ten works as intended", {
-  
   # Dummy data
   x1 <- 1001
   x2 <- 11
   x3 <- 123456789
-  
+
   # Expected
   exp_1 <- 9
   exp_2 <- 9
   exp_3 <- 123456789
-  
+
   # Test
   actual_1 <- transform_to_base_ten(x = x1, base = 2)
   expect_equal(actual_1, exp_1)
@@ -139,7 +140,6 @@ testthat::test_that("Test that transform_to_base_ten works as intended", {
 })
 
 testthat::test_that("Test that extract_last_digits works as intended", {
-  
   # Dummy data
   x1 <- 1
   x2 <- 12
@@ -151,7 +151,7 @@ testthat::test_that("Test that extract_last_digits works as intended", {
   exp_2 <- 2
   exp_3 <- 3
   exp_4 <- 4
-  
+
   # Test
   actual_1 <- extract_last_digits(x = x1)
   expect_equal(actual_1, exp_1)
@@ -167,20 +167,19 @@ testthat::test_that("Test that extract_last_digits works as intended", {
 })
 
 testthat::test_that("Test that extract_digits works as intended", {
-  
   # Dummy data
   x1 <- 1
   x2 <- 123456789
-  x3 <- c(1,22,333)
-  x4 <- c(10,100,101013)
+  x3 <- c(1, 22, 333)
+  x4 <- c(10, 100, 101013)
   x5 <- 0
-  
+
   # Expected
   exp_1 <- c(1)
-  exp_2 <- c(1,2,3,4,5,6,7,8,9) %>% sort()
-  exp_3 <- c(1,2,2,3,3,3) %>% sort()
-  exp_4 <- c(1,0,1,0,0,1,0,1,0,1,3) %>% sort() 
-    
+  exp_2 <- c(1, 2, 3, 4, 5, 6, 7, 8, 9) %>% sort()
+  exp_3 <- c(1, 2, 2, 3, 3, 3) %>% sort()
+  exp_4 <- c(1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 3) %>% sort()
+
   # Test
   actual_1 <- extract_digits(x = x1)
   expect_equal(actual_1, exp_1)
@@ -199,20 +198,19 @@ testthat::test_that("Test that extract_digits works as intended", {
 
 
 testthat::test_that("Test that extract_digits_matrix works as intended", {
-  
   # Dummy data
   x1 <- 1
   x2 <- 123456789
-  x3 <- c(1,22,333)
-  x4 <- c(10,100,101013)
+  x3 <- c(1, 22, 333)
+  x4 <- c(10, 100, 101013)
   x5 <- 0
-  
+
   # Expected
   exp_1 <- c(1)
-  exp_2 <- c(1,2,3,4,5,6,7,8,9) %>% sort()
-  exp_3 <- c(1,2,2,3,3,3) %>% sort()
-  exp_4 <- c(1,0,1,0,0,1,0,1,0,1,3) %>% sort() 
-  
+  exp_2 <- c(1, 2, 3, 4, 5, 6, 7, 8, 9) %>% sort()
+  exp_3 <- c(1, 2, 2, 3, 3, 3) %>% sort()
+  exp_4 <- c(1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 3) %>% sort()
+
   # Test
   actual_1 <- extract_digits_matrix(x = x1)
   expect_equal(actual_1, exp_1)
