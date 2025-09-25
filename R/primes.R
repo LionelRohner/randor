@@ -50,16 +50,16 @@ sieve_ov_Erathostenes <- function(to){
   return(which(vec_nat))
 }
 
-#' Get circular primes - E.g. 113, 131, and 311, i.e. circular permutatios that
-#' are also primes
+#' Get circular primes
+#' E.g. 113, 131, and 311, i.e. circular permutatios that are also primes
+#' @param primes A vector of primes.
 #'
-#' @param primes 
-#'
-#' @return
+#' @return A vector of circular primes.
 #' @export
 #'
-#' @examples primes_to_11 <- sieve_ov_Erathostenes(11)
-#' get_circular_primes(primes_to_11)
+#' @examples
+#' primes_to_100 <- sieve_ov_Erathostenes(100)
+#' get_circular_primes(primes_to_100)
 get_circular_primes <- function(primes){
   
   # Cache vector for primes - reduces the number of iteration if primes are already in
@@ -115,17 +115,16 @@ get_circular_primes <- function(primes){
   return(circular_primes)
 }
 
-#' Title
+#' Coin change algorithm
+#' TODO: This function is not yet implemented correctly.
+#' @param coins A vector of coin denominations.
+#' @param N The target amount.
 #'
-#' @param coins 
-#' @param N 
-#'
-#' @return
+#' @return The number of ways to make change for N.
 #' @export
 #'
 #' @examples
-
-# TODO: Does not yet work
+#' coin_change_algo(c(1,2),4)
 coin_change_algo <- function(coins, N){
   
   # create vars

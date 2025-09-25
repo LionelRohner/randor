@@ -19,7 +19,15 @@ library(fitdistrplus)
 #
 #       The accurcacy of the estimate dependens on the number of generated uniform points
 
-# generate uniformly distributed points
+#' Generate uniformly distributed points
+#'
+#' @param n The number of points to generate.
+#'
+#' @return A matrix of uniformly distributed points.
+#' @export
+#'
+#' @examples
+#' generate_points(10)
 generate_points <- function(n){
   
   # put them in a matrix
@@ -29,7 +37,16 @@ generate_points <- function(n){
 
 }
 
-# calculate vector norm and check whether point is within radius (i.e. < 1)
+#' Get distance
+#' Calculates the vector norm and checks whether the point is within the radius (i.e. < 1).
+#' @param XY A matrix of points.
+#'
+#' @return A logical vector indicating whether each point is within the unit circle.
+#' @export
+#'
+#' @examples
+#' pts <- generate_points(10)
+#' get_distance(pts)
 get_distance <- function(XY){
   
   # calculate vector norm and test if its bigger than the radius (i.e. 1)
@@ -37,7 +54,17 @@ get_distance <- function(XY){
   return(dist)
 }
 
-# approximate pi using 4*points_within_circle/total_points
+#' Approximate pi
+#' Approximates pi using the formula 4 * points_within_circle / total_points.
+#' @param dist A logical vector indicating whether each point is within the unit circle.
+#'
+#' @return An approximation of pi.
+#' @export
+#'
+#' @examples
+#' pts <- generate_points(1000)
+#' dist <- get_distance(pts)
+#' approx_pi(dist)
 approx_pi <- function(dist){
   # pi*r^2 / 4 == numb_circle / numb_total (divided by for because we have just one quadrant)
   return(4*sum(dist)/length(dist))
@@ -47,9 +74,16 @@ approx_pi <- function(dist){
 # Main Function Empirical -------------------------------------------------
 
 
-# empirical version just generates data between 0 and 1 and calculates the
-# to the radius of the unit circle.
-# More details here : https://en.wikipedia.org/wiki/Approximations_of_%CF%80#Summing_a_circle's_area
+#' Estimate pi empirically
+#' The empirical version just generates data between 0 and 1 and calculates the distance to the radius of the unit circle.
+#' More details here : https://en.wikipedia.org/wiki/Approximations_of_%CF%80#Summing_a_circle's_area
+#' @param n The number of points to generate.
+#'
+#' @return An approximation of pi.
+#' @export
+#'
+#' @examples
+#' estimate_pi_empirical(1000)
 estimate_pi_empirical <- function(n){
   dist <- get_distance(generate_points(n = n))
   return(approx_pi(dist = dist))
@@ -71,7 +105,17 @@ estimate_pi_empirical <- function(n){
 #       one ratio, the number of initial ratios to generate, the number of ratios
 #       to draw from the newly made distribution, thus this needs some optimization.
 
-# calculate ratio of points within
+#' Calculate ratio of points within
+#'
+#' @param n The number of points to generate.
+#' @param samplingSize The number of samples to take.
+#' @param plot A logical indicating whether to plot a histogram of the ratios.
+#'
+#' @return A vector of ratios.
+#' @export
+#'
+#' @examples
+#' calc_ratio(100, 10, FALSE)
 calc_ratio <- function(n, samplingSize, plot){
   distMatrix <- matrix(get_distance(generate_points(n)), nrow = samplingSize)
   ratioVector <- rowSums(distMatrix)/ncol(distMatrix)
@@ -83,7 +127,18 @@ calc_ratio <- function(n, samplingSize, plot){
   return(ratioVector)
 }
 
-# fit a gamma distribution to ratio data set and sample from gamma
+#' Generate gamma distribution
+#' Fits a gamma distribution to a ratio data set and samples from it.
+#' @param ratioVector A vector of ratios.
+#' @param outputLength The number of samples to generate.
+#' @param plot A logical indicating whether to plot a histogram of the generated samples.
+#'
+#' @return A vector of samples from the gamma distribution.
+#' @export
+#'
+#' @examples
+#' ratios <- calc_ratio(100, 10, FALSE)
+#' generate_gamma(ratios, 100, FALSE)
 generate_gamma <- function(ratioVector, outputLength, plot){
   thetaGamma <- fitdistr(ratioVector, "gamma")$estimate 
   
@@ -97,7 +152,16 @@ generate_gamma <- function(ratioVector, outputLength, plot){
   return(rgamma(outputLength,shape = thetaGamma[1],rate = thetaGamma[2]))  
 }
 
-# from: https://stats.stackexchange.com/questions/376634/how-to-pick-starting-parameters-for-massfitdist-with-the-beta-distribution
+#' Beta method of moments
+#' from: https://stats.stackexchange.com/questions/376634/how-to-pick-starting-parameters-for-massfitdist-with-the-beta-distribution
+#' @param x A numeric vector.
+#'
+#' @return A list with the shape1 and shape2 parameters of the beta distribution.
+#' @export
+#'
+#' @examples
+#' ratios <- calc_ratio(100, 10, FALSE)
+#' beta_mom(ratios)
 beta_mom <- function(x) {
   
   m_x <- mean(x, na.rm = TRUE)
@@ -120,7 +184,18 @@ beta_mom <- function(x) {
   
 }
 
-# fit a beta distribution to ratio data set and sample from this distribution
+#' Generate beta distribution
+#' Fits a beta distribution to a ratio data set and samples from this distribution.
+#' @param ratioVector A vector of ratios.
+#' @param outputLength The number of samples to generate.
+#' @param plot A logical indicating whether to plot a histogram of the generated samples.
+#'
+#' @return A vector of samples from the beta distribution.
+#' @export
+#'
+#' @examples
+#' ratios <- calc_ratio(100, 10, FALSE)
+#' generate_beta(ratios, 100, FALSE)
 generate_beta <- function(ratioVector, outputLength, plot){
   
   # remove 1s and 0s (the latter is very unlikely)
@@ -148,7 +223,16 @@ generate_beta <- function(ratioVector, outputLength, plot){
 }
 
 
-# fit a beta distribution to ratio data set and sample from this distribution
+#' Get beta distribution parameters
+#' Fits a beta distribution to a ratio data set and returns the parameters.
+#' @param ratioVector A vector of ratios.
+#'
+#' @return The parameters of the beta distribution.
+#' @export
+#'
+#' @examples
+#' ratios <- calc_ratio(100, 10, FALSE)
+#' get_beta_dist(ratios)
 get_beta_dist <- function(ratioVector){
   
   # remove 1s and 0s (the latter is very unlikely)
@@ -164,7 +248,17 @@ get_beta_dist <- function(ratioVector){
 }
 
 
-# approximate pi (same as above).  
+#' Approximate pi using resampling
+#'
+#' @param randVec A vector of random numbers.
+#'
+#' @return An approximation of pi.
+#' @export
+#'
+#' @examples
+#' ratios <- calc_ratio(100, 10, FALSE)
+#' rand_beta <- generate_beta(ratios, 100, FALSE)
+#' approx_pi_resample(rand_beta)
 approx_pi_resample <- function(randVec){
   withinCircle <- mean(randVec)
   outsideCircle <- 1 - withinCircle 
@@ -174,10 +268,21 @@ approx_pi_resample <- function(randVec){
 
 # Main Function Resampling ------------------------------------------------
 
-# this function uses a probabilistic approach. The ratio of points that are
-# within the radius is sampled from a fitted gamma distribution. Currently, the 
-# mean of randomly generated data from this vector is used to estimate pi.
-
+#' Estimate pi using resampling
+#' This function uses a probabilistic approach. The ratio of points that are
+#' within the radius is sampled from a fitted gamma distribution. Currently, the
+#' mean of randomly generated data from this vector is used to estimate pi.
+#' @param n The number of points to generate.
+#' @param outputLength The number of samples to generate from the distribution.
+#' @param samplingSize The number of samples to take for the ratio calculation.
+#' @param distr The distribution to use for resampling ("beta" or "gamma").
+#' @param plot A logical indicating whether to plot a histogram of the generated samples.
+#'
+#' @return An approximation of pi.
+#' @export
+#'
+#' @examples
+#' estimate_pi_resampled(100, 100, 10)
 estimate_pi_resampled <- function(n,
                                   outputLength = 1e6,
                                   samplingSize = 1e5,
@@ -211,10 +316,20 @@ estimate_pi_resampled <- function(n,
 
 # MCMC-like Functions -----------------------------------------------------
 
-# MCMC-like algorithm, but instead of using a hastings ratio, I used the accuracy measure,
-# which kinda breaks the purpose of the MCMC, which is used when the true value is unknown.
-# But heck, its just for fun, right.
-
+#' MCMC-like algorithm for pi estimation
+#' MCMC-like algorithm, but instead of using a hastings ratio, I used the accuracy measure,
+#' which kinda breaks the purpose of the MCMC, which is used when the true value is unknown.
+#' But heck, its just for fun, right.
+#' @param nInit The number of initial points to generate for the prior distribution.
+#' @param samplingSize The number of samples to take for the prior distribution.
+#' @param nSD The number of points to generate for the standard deviation calculation.
+#' @param nIter The number of iterations for the MCMC chain.
+#'
+#' @return A vector representing the MCMC chain.
+#' @export
+#'
+#' @examples
+#' MCMC_Pi(nIter = 100)
 MCMC_Pi <- function(nInit = 1e6, samplingSize = 1e4, nSD = 1000, nIter){
   
   # 0.) initialize result vector and get a value for d
@@ -256,7 +371,18 @@ MCMC_Pi <- function(nInit = 1e6, samplingSize = 1e4, nSD = 1000, nIter){
   return(x)
 }
 
-# Metropolis-Hastings-like Algo. Same as above but with real hastings ratio
+#' Metropolis-Hastings-like algorithm for pi estimation
+#' Same as MCMC_Pi but with a real Hastings ratio.
+#' @param nInit The number of initial points to generate for the prior distribution.
+#' @param samplingSize The number of samples to take for the prior distribution.
+#' @param nSD The number of points to generate for the standard deviation calculation.
+#' @param nIter The number of iterations for the MCMC chain.
+#'
+#' @return A vector representing the MCMC chain.
+#' @export
+#'
+#' @examples
+#' MCMC_h_Pi(nIter = 100)
 MCMC_h_Pi <- function(nInit = 1e6, samplingSize = 1e4, nSD = 1000, nIter){
   
   # 0.) initialize result vector and get a value for d
@@ -309,13 +435,29 @@ MCMC_h_Pi <- function(nInit = 1e6, samplingSize = 1e4, nSD = 1000, nIter){
 
 # Methods to measure the accuracy of the estimates
 
-# the smaller the number the better
+#' Accuracy of pi estimate
+#' The smaller the number the better.
+#' @param pi_estimate An estimation of pi.
+#'
+#' @return The absolute difference between the estimate and the true value of pi.
+#' @export
+#'
+#' @examples
+#' accuracy_pi_estimate(3.14)
 accuracy_pi_estimate <- function(pi_estimate){
   return(abs(pi_estimate-pi))
 }
 
 
-# scoring function, the lower the absolute difference between pi and the estimate the better
+#' Scoring function
+#' The lower the absolute difference between pi and the estimate the better.
+#' @param res The result of the accuracy_pi_estimate function.
+#'
+#' @return A score from 0 to 6.
+#' @export
+#'
+#' @examples
+#' scoring(0.05)
 scoring <- function(res){
   if(res > 0.1){
     return(0)
@@ -334,7 +476,20 @@ scoring <- function(res){
   } 
 }
 
-# compare time and score of accuracy, not for MCMC as we only consider the last values
+#' Test accuracy of pi estimation
+#' Compare time and score of accuracy. Not for MCMC as we only consider the last values.
+#' @param n The number of points to generate.
+#' @param nIter The number of iterations.
+#' @param type The type of estimation ("empirical" or "resampled").
+#' @param samplingSize The number of samples to take for the ratio calculation.
+#' @param outputLength The number of samples to generate from the distribution.
+#' @param distr The distribution to use for resampling ("beta" or "gamma").
+#'
+#' @return A data frame with the accuracy scores.
+#' @export
+#'
+#' @examples
+#' test_accuracy(100, 10, "empirical")
 test_accuracy <- function(n,
                           nIter,
                           type,
@@ -387,7 +542,20 @@ test_accuracy <- function(n,
    
 }
 
-# descriptive statistics of the pi estimate collected from several iterations
+#' Mean estimate of pi
+#' Descriptive statistics of the pi estimate collected from several iterations.
+#' @param n The number of points to generate.
+#' @param nIter The number of iterations.
+#' @param type The type of estimation ("empirical" or "resampled").
+#' @param samplingSize The number of samples to take for the ratio calculation.
+#' @param outputLength The number of samples to generate from the distribution.
+#' @param distr The distribution to use for resampling ("beta" or "gamma").
+#'
+#' @return A data frame with descriptive statistics of the pi estimates.
+#' @export
+#'
+#' @examples
+#' mean_estimate(100, 10, "empirical")
 mean_estimate <- function(n,
                           nIter,
                           type,

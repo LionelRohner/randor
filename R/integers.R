@@ -4,12 +4,14 @@
 #' Get number of digits of a number
 #' log10 of a number gives us the approximate number of digits - 1. By using the floor operation we cancel the decimal noise
 #'
-#' @param x 
+#' @param x A positive integer.
+#' @param base The base to use for the logarithm.
 #'
-#' @return
+#' @return The number of digits in x.
+#' @export
 #'
 #' @examples
-
+#' get_digits(123)
 get_digits <- function(x, base = 10){
   assertthat::assert_that(min(x) >= 0, msg = "x should be positive!")
   ndigits <- floor(log(x, base = base)+1)
@@ -20,16 +22,17 @@ get_digits <- function(x, base = 10){
 # by 10 we get the geometric sequence 1, 10 , 100 , 1000 etc
 
 
-#' Title
+#' Get powers of ten
 #'
-#' @param ndigits 
-#' @param include_one 
-#' @param full_seq 
+#' @param ndigits The number of digits.
+#' @param include_one A logical indicating whether to include 1 in the sequence.
+#' @param full_seq A logical indicating whether to return the full sequence or just the upper bound.
 #'
-#' @return
+#' @return A vector of powers of ten.
 #' @export
 #'
 #' @examples
+#' get_powers_of_ten(3)
 get_powers_of_ten <- function(ndigits,
                               include_one = FALSE,
                               full_seq = TRUE){
@@ -47,16 +50,17 @@ get_powers_of_ten <- function(ndigits,
 
 # Reverses the deconstruction of integers in digits.https://mathworld.wolfram.com/Concatenation.html
 
-#' Concatenate
+#' Concatenate numbers
+#' Reverses the deconstruction of integers in digits.https://mathworld.wolfram.com/Concatenation.html
+#' @param x The first number.
+#' @param y The second number.
+#' @param base The base to use for the concatenation.
 #'
-#' @param x 
-#' @param y 
-#' @param base 
-#'
-#' @return
+#' @return The concatenated number.
 #' @export
 #'
 #' @examples
+#' concatenate_math(12, 34)
 concatenate_math <- function(x,y,base=10){
   assertthat::assert_that(y != 0,
                           msg = "Use of y = 0 is not recommended, because the number of digits of 0 is -Inf, which forces x*base**(get_digits(y)) to zero, thus setting x to zero!!!")
@@ -64,15 +68,16 @@ concatenate_math <- function(x,y,base=10){
   return(concat)
 }
 
-#' Title
+#' Transform to base ten
 #'
-#' @param x 
-#' @param base 
+#' @param x The number to transform.
+#' @param base The base of the number.
 #'
-#' @return
+#' @return The number in base ten.
 #' @export
 #'
 #' @examples
+#' transform_to_base_ten(1000, 2)
 transform_to_base_ten <- function(x,base){
   digits_seq <- seq(1:get_digits(x, base = 10))-1
   transformed <- sum(extract_digits(x)*base**digits_seq)
@@ -90,14 +95,15 @@ transform_to_base_ten(1000,base = 2)
 # https://stackoverflow.com/questions/19764244/how-can-we-split-an-integer-number-into-a-vector-of-its-constituent-digits-in-r
 
 
-#' Title
+#' Extract digits from a vector of numbers
 #'
-#' @param x_vec 
+#' @param x_vec A vector of numbers.
 #'
-#' @return
+#' @return A vector of digits.
 #' @export
 #'
 #' @examples
+#' extract_digits(c(123, 456))
 extract_digits <- function(x_vec){
   # Container
   digit_vec_out <- c()
@@ -116,14 +122,15 @@ extract_digits <- function(x_vec){
   return(digit_vec_out)
 }
 
-#' Title
+#' Extract digits from a vector of numbers and return a matrix
 #'
-#' @param x 
+#' @param x A vector of numbers.
 #'
-#' @return
+#' @return A matrix of digits.
 #' @export
 #'
 #' @examples
+#' extract_digits_matrix(c(123, 456))
 extract_digits_matrix <- function(x){
   pwr_ten <- get_powers_of_ten(ndigits = get_digits(max(x)))
   # Create matrix of repeated power of ten series with outer-product
@@ -151,21 +158,31 @@ extract_digits_matrix <- function(x){
   return(out)
 }
 
-#' Title
+#' Extract the last digit of each number in a vector
 #'
-#' @param x 
+#' @param x A vector of numbers.
 #'
-#' @return
+#' @return A vector of the last digits.
 #' @export
 #'
 #' @examples
+#' extract_last_digits(c(123, 456))
 extract_last_digits <- function(x){
   last_digit <- x%%10
   return(last_digit)
 }
 
-# https://www.youtube.com/watch?v=UDQjn_-pDSs
+#' Check if a number is divisible by its digits
+#' https://www.youtube.com/watch?v=UDQjn_-pDSs
+#' @param x A number.
+#'
+#' @return A logical indicating whether the number is divisible by its digits.
+#' @export
+#'
+#' @examples
+#' is_divisible_by_digit(12)
 is_divisible_by_digit <- function(x){
+  # TODO: Not yet implemented
   return(NULL)
 }
 
