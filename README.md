@@ -1,111 +1,73 @@
 # randor
-Random R functions for everyday use ( ͡° ͜ʖ ͡°)
-# 2DListComprehension
-An approach to emulate Python's 2D list comprehension in R. 
 
-Based on comprehenr : https://cran.r-project.org/web/packages/comprehenr/index.html
-# EstimatePi
-Estimate π from uniformly drawn points within a square of length 1. π is estimated as the ratio of points within a unit circle within the square divided to all points in the square.
+( ͡° ͜ʖ ͡°)
 
-### Empirical Method
+## A "Sammelsurium" of R Functions
 
-**The Idea:** 
-Create uniformly distributed points between 0 and 1 and consider them as vectors pointing to this random coordinate. Then count the vectors that have a vector norm of less than 1, i.e. the points inside the unit circle. The ratio of points inside to points outside the unit circle is an approximation to π/4. The accuracy of the estimate depends on the number of uniform points generated. Below 1e6, the accuracy is quite poor.
+This repository is a "Sammelsurium" – a wild mix of various R functions. It was created by merging several smaller, older repositories.
 
-### Resampling Method
+**Disclaimer:** Many of these functions are not optimized for performance and are primarily for educational or experimental purposes. They often serve as less efficient, plain R implementations of functions that are already available in other packages or even in base R. They were mostly written as a fun way to explore mathematical concepts.
 
-**The Idea:** 
-The idea is to avoid generating a large number of points to get an accurate approximation of pi. Instead, we compute rather imprecise estimates of the ratio of the points inside and outside the unit circle and generate a beta or gamma distribution of ratios. The parameter estimate of the beta distribution is based on the method-of-moments to find initial values for alpha and beta in ~ Beta(alpha, beta). Once the distribution is fixed, we sample from that distribution and take the mean of the distribution, which should be a good estimate of pi.
+---
 
-This method has many parameters, such as the number of points to calculate a ratio, the number of initial ratios to generate, and the number of ratios to draw from the newly created distribution, and so some optimization is required (grid search or something more intelligent?). But at the moment, this method is neither more accurate nor faster than the empirical method...
+## Function Categories
 
-### MCMC-like Method
+The functions in this repository are grouped into the following categories:
 
-MCMC-like algorithm, but instead of the Hastings ratio I used the accuracy measure, which kind of defeats the purpose of the MCMC algorithm, since it is used when the true value is unknown. But heck, it's just for fun, right? A newer implementation has the Hastings ratio with a uniform proposal kernel (cancels out).
+### 2D List Comprehension
+- **File:** `R/2d_list_comprehension.R`
+- **Description:** An attempt to emulate Python's 2D list comprehension in R. This is based on the `comprehenr` package.
 
-**The Idea:**
-1.) Create a prior distribution (beta distribution of unit circle ratio (same as in the resampling method))
-2.) Propose first move (start with mean of prior)
-3.) Initiate chain
-4.) Propose a move with uniform proposal kernel
-5.) Compute hastings-ratio H, accept if H >= than Uniform([0,1]). Alternatively, Compute accuracy, accept move if accuracy is better else stay.
-6.) End chain at maxIter.
+### Date Functions
+- **File:** `R/dates.R`
+- **Description:** Contains helper functions for date calculations, such as calculating the age between two dates.
 
-# LAFNAF
-<ins>L</ins>inear <ins>A</ins>lgebra <ins>F</ins>unctions That <ins>N</ins>obody <ins>A</ins>sked <ins>F</ins>or, But Here They Are.
+### Pi Estimation
+- **File:** `R/estimate_pi.R`
+- **Description:** A collection of functions to estimate the value of π using different methods, including empirical, resampling, and MCMC-like approaches.
 
-Originally, I wrote these functions to verify some linear algebra exercises. As the number of functions grew, I created this repository. The functions are not efficient (it's plain R-code) nor have they been thoroughly tested. Besides, all these functions have been implemented more efficiently in other packages or even in base R. It is just a fun exercise for me to get a better understanding of linear algebra.
+### Integer Functions
+- **File:** `R/integers.R`
+- **Description:** A set of functions for various integer operations, such as extracting digits from a number, getting powers of ten, and concatenating numbers mathematically.
 
-### To Do List:
-* The **singular_value_decomposition** function does not work correctly as the eigenvectors produced by R have a random sign, thus the matrix product **PDQ^-1** (corresponds to **UΣV^-1**) does not reconstitute **A**. Solution: Implement sign-flip function from https://digital.library.unt.edu/ark:/67531/metadc900575/m2/1/high_res_d/920802.pdf.
-* ~~Reduced row echelon forms for centering matrice, probably due to floating point errors. No, but it works now.~~
-* ~~The **rref** function does not return the reduced row echelon form, since it does not set free variables, which are located above a pivot to zero. Solution: Repeat Gaussian Elimination for free variables.~~
-* ~~The **generalized_inverse** function, I am still trying to find a way to find a nonsingular matrix in **A** without using the builtin function **qr**. Once rref works fine, this can be used to find rank r and consequetnly to find a submatrix by checking, which rxr submatrix has a determinant > 0.~~
-* ~~Once **rref** works, rewrite **rank_Matrix**.~~
+### Linear Algebra (LAFNAF)
+- **File:** `R/lafnaf.R`
+- **Description:** **L**inear **A**lgebra **F**unctions **T**hat **N**obody **A**sked **F**or. This is a collection of functions for linear algebra operations, originally written to verify exercises. It includes functions for matrix decomposition, finding inverses, and checking matrix properties.
+- **Plotting Functions:** `R/plot.R` contains functions to visualize 2x2 matrix transformations.
 
-### Main Functions:
+### Prime Number Functions
+- **File:** `R/primes.R`
+- **Description:** Functions related to prime numbers, including the Sieve of Eratosthenes for finding primes up to a given number and a function to find circular primes.
 
-* **create_basis:** Create a set of linear independent vectors that span a real vector-space.
-*  **is_pos_def:** Checks whether a matrix **A** is positive definite.
-*  **mat_pow:** Calculate powers of some matrix **A**.
-*  **canonical_form:** Compute the decomposition of a matrix **A** into **UDU^-1**, where **U** is the matrix of eigenvectors and the diagonal matrix **D**, the similar canonical form, containing the eigenvalues of **A**.
-*  **fast_exp:** Fast exponentiation using the similar canonical form.
-*  **lin_dep_Cautchy_Schwartz:** Checks for the Cautchy-Schwartz-Inequality between two vectors or between rows/cols of matrix to check for linear dependence.
-*  **adjugate:** Creates an adjugate matrix of some matrix **A**.
-*  **generalized_inverse:** Create generalized inverses of any matrix **A**. Needs more testing.
-*  **check_Penrose_cond:** Check for the four Penrose condition for matrix inverses, i.e. A = AMA, M = MAM, AM = (AM)^T, MA = (MA)^T
-*  **inverse:** Creates an inverse of a nonsingular matrix **A**.
-*  **orthogonalize:** Create an orthogonal matrix from some matrix **A**. Used for my SVD implementation (computations of AA^T and A^TA).
-*  **rank_matrix:** Compute rank of matrix.
-*  **singular_value_decomposition:** Does not work yet, I need to solve the problem of the sign ambiguity of eigenvector calculations.
-*  **find_zero_vectors:** Find zero-vectors in a matrix using vector norm.
-*  **ref:** Reduce some matrix **A** to row echelon form. Used for **rank_Matrix**, because its quicker than **rref**.
-*  **rref:** Reduce some matrix **A** to reduced row echelon form. Validated to some extent... Needs more testing.
+### Matrix Derivatives
+- **File:** `matrix_derivatives.R`
+- **Description:** Derivate Using Linear Algebra. This is a fun project inspired by this video [Video](https://www.youtube.com/watch?v=TgKwz5Ikpc8) by 3 Blue 1 Brown.
 
-### Plot Functions:
-*  **plot_eigenvec:** Plots eigenvalues of a 2x2 matrix.
-*  **plot_matrix_transformation:** Plots vectors **x** and **y** as in **Ax=y**, where **A** is 2x2.
+The idea is that the polynomials of any degree can be described as a matrix-vector multiplication. More precisely, a matrix ($\mathbf{D}$) representing the differentiation of any terms of a polynomial is premultiplied by the vector ($\mathbf{p}$) describing the terms of the polynomial.
 
-### Auxiliary Functions:
-* **compare_floats:** Compare equality of floats. Principle: Compare absolute difference of two floats to a tolerance value (default = 1e-06). 
-*  **swap:** Swap rows in a some matrix **A**. Used in **rref**.
-*  **add_to_bottom:** Add rows to the bottom of a matrix **A**. Used in **rref**.
-*  **col_is_all_zero:** Check (TRUE/FALSE) whether a column is all zeros. Used in **rref**.
-*  **gaussian_elimination:** Performs Gaussian elimination on non-zero rows of a matrix. Used in **rref**.
-*  **swap_zero_vectors:** Combination of **find_Zero_Vectors** and **add_to_bottom** used to rearrange rows in **rref**.
-*  **remove_parallel_vectors:** Remove parallel vectors (rows or cols) in a matrix based on the Cautchy Schwartz Equality. Used in **rref**.
-### MatrixDerivatives
-Derivate Using Linear Algebra. This is a fun project inspired by this video [Video](https://www.youtube.com/watch?v=TgKwz5Ikpc8) by 3 Blue 1 Brown.
+**Differentiation Matrix:**
+$$
+\mathbf{D}=\frac{\mathbf{d}}{\mathbf{dx}}=\begin{bmatrix} 0 & 1 & 0 & 0 & 0 & \cdots \\ 0 & 0 & 2 & 0 & 0 & \cdots \\ 0 & 0 & 0 & 3 & 0 & \cdots \\ 0 & 0 & 0 & 0 & 4 & \cdots \\ 0 & 0 & 0 & 0 & 0 & \cdots \\ \vdots & \vdots & \vdots & \vdots & \ddots \end{bmatrix}
+$$
 
-[![purple-pi](https://img.shields.io/badge/Rendered%20with-Purple%20Pi-bd00ff?style=flat-square)](https://github.com/nschloe/purple-pi?activate) 
-
-The idea is that the polynomials of any degree (e.g. ) can be described as a matrix-vector multiplication. More precisely, a matrix (**D**) representing the differentiation of any terms of a polynomial is premultiplied by the vector (**p**) describing the terms of the polynomial.
-
-Differentiation Matrix :
-<img src="https://latex.codecogs.com/svg.image?\textbf{D}=\frac{\textbf{d}}{\textbf{dx}}=\begin{bmatrix}&space;0&&space;&space;1&&space;&space;0&&space;&space;0&space;&&space;0&\cdots&space;\\&space;0&&space;&space;0&&space;&space;2&&space;&space;0&space;&&space;0&\cdots&space;\\&space;0&&space;&space;0&&space;&space;0&&space;&space;3&space;&&space;0&\cdots&space;\\&space;0&&space;&space;0&&space;&space;0&&space;&space;0&space;&&space;4&\cdots&space;\\&space;0&&space;&space;0&&space;&space;0&&space;&space;0&space;&&space;0&\cdots&space;\\&space;&space;\vdots&space;&&space;\vdots&space;&&space;\vdots&space;&&space;\vdots&space;&&space;\ddots&space;\end{bmatrix}" title="\textbf{D}=\frac{\textbf{d}}{\textbf{dx}}=\begin{bmatrix} 0& 1& 0& 0 & 0&\cdots \\ 0& 0& 2& 0 & 0&\cdots \\ 0& 0& 0& 3 & 0&\cdots \\ 0& 0& 0& 0 & 4&\cdots \\ 0& 0& 0& 0 & 0&\cdots \\ \vdots & \vdots & \vdots & \vdots & \ddots \end{bmatrix}" />
-
-# Example
+#### Example
 
 An example of a third degree polynomial.
-
-<img src="https://latex.codecogs.com/svg.image?f(x)&space;=&space;13&plus;x&plus;3x^2&plus;4x^3" title="f(x) = 13+x+3x^2+4x^3" />
+$$
+f(x) = 13+x+3x^2+4x^3
+$$
 
 The derivative of the polynomial:
-
-<img src="https://latex.codecogs.com/svg.image?\frac{\textbf{d}}{\textbf{dx}}(13&plus;x&plus;3x^2&plus;4x^3)=0&plus;1&plus;6x&plus;12x^2" title="\frac{\textbf{d}}{\textbf{dx}}(13+x+3x^2+4x^3)=0+1+6x+12x^2" />
-
+$$
+\frac{\mathbf{d}}{\mathbf{dx}}(13+x+3x^2+4x^3)=0+1+6x+12x^2
+$$
 
 In matrix notation, the coefficients corresponding to any term are represented in a vector form, where row number are the degrees of the terms. First row corresponds to the constant part of the polynomial.
+$$
+\vec{\mathbf{p}}= \begin{bmatrix}13 \\1 \\3 \\4 \\0 \\\vdots \end{bmatrix}
+$$
 
-<img src="https://latex.codecogs.com/svg.image?\vec{\textbf{p}}=&space;\begin{bmatrix}13&space;\\1&space;\\3&space;\\4&space;\\0&space;\\\vdots&space;\end{bmatrix}" title="\vec{\textbf{p}}= \begin{bmatrix}13 \\1 \\3 \\4 \\0 \\\vdots \end{bmatrix}" />
-
-Calculation of <img src="https://latex.codecogs.com/svg.image?\textbf{D}&space;\vec{p}" title="\textbf{D} \vec{p}" />
-In matrix notation, the coefficients corresponding to any term are represented in a vector form, where row number are the degrees of the terms. First row corresponds to the constant part of the polynomial.
-
-<img src="https://latex.codecogs.com/svg.image?\vec{\textbf{p}}=&space;\begin{bmatrix}13&space;\\1&space;\\3&space;\\4&space;\\0&space;\\\vdots&space;\end{bmatrix}" title="\vec{\textbf{p}}= \begin{bmatrix}13 \\1 \\3 \\4 \\0 \\\vdots \end{bmatrix}" />
-
-Calculation of <img src="https://latex.codecogs.com/svg.image?\textbf{D}&space;\vec{p}" title="\textbf{D} \vec{p}" />
-
-<img src="https://latex.codecogs.com/svg.image?\begin{bmatrix}&space;0&&space;1&&space;0&&space;0&space;&&space;0&\cdots&space;\\&space;0&&space;0&&space;2&&space;0&space;&&space;0&\cdots&space;\\&space;0&&space;0&&space;0&&space;3&space;&&space;0&\cdots&space;\\&space;0&&space;0&&space;0&&space;0&space;&&space;4&\cdots&space;\\&space;0&&space;0&&space;0&&space;0&space;&&space;0&\cdots&space;\\&space;\vdots&space;&&space;\vdots&space;&&space;\vdots&space;&&space;\vdots&space;&&space;\ddots&space;\end{bmatrix}&space;\begin{bmatrix}13&space;\\1&space;\\3&space;\\4&space;\\0&space;\\\vdots&space;\end{bmatrix}&space;=&space;\begin{bmatrix}1&space;\\6&space;\\12&space;\\0&space;\\0&space;\\\vdots&space;\end{bmatrix}&space;=\begin{bmatrix}\text{Constant}&space;\\\text{1st&space;Order&space;Term}&space;\\\text{2nd&space;Order&space;Term}&space;\\\text{3rd&space;Order&space;Term}\\\text{4th&space;Order&space;Term}&space;\\\vdots&space;\end{bmatrix}" title="\begin{bmatrix} 0& 1& 0& 0 & 0&\cdots \\ 0& 0& 2& 0 & 0&\cdots \\ 0& 0& 0& 3 & 0&\cdots \\ 0& 0& 0& 0 & 4&\cdots \\ 0& 0& 0& 0 & 0&\cdots \\ \vdots & \vdots & \vdots & \vdots & \ddots \end{bmatrix} \begin{bmatrix}13 \\1 \\3 \\4 \\0 \\\vdots \end{bmatrix} = \begin{bmatrix}1 \\6 \\12 \\0 \\0 \\\vdots \end{bmatrix} =\begin{bmatrix}\text{Constant} \\\text{1st Order Term} \\\text{2nd Order Term} \\\text{3rd Order Term}\\\text{4th Order Term} \\\vdots \end{bmatrix}" />
-
-
+Calculation of $\mathbf{D} \vec{p}$:
+$$
+\begin{bmatrix} 0 & 1 & 0 & 0 & 0 & \cdots \\ 0 & 0 & 2 & 0 & 0 & \cdots \\ 0 & 0 & 0 & 3 & 0 & \cdots \\ 0 & 0 & 0 & 0 & 4 & \cdots \\ 0 & 0 & 0 & 0 & 0 & \cdots \\ \vdots & \vdots & \vdots & \vdots & \ddots \end{bmatrix} \begin{bmatrix}13 \\1 \\3 \\4 \\0 \\\vdots \end{bmatrix} = \begin{bmatrix}1 \\6 \\12 \\0 \\0 \\\vdots \end{bmatrix} =\begin{bmatrix}\text{Constant} \\\text{1st Order Term} \\\text{2nd Order Term} \\\text{3rd Order Term}\\\text{4th Order Term} \\\vdots \end{bmatrix}
+$$
