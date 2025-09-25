@@ -1,13 +1,3 @@
-
-<<<<<<< Updated upstream
-# Function ----------------------------------------------------------------
-=======
-
-# Function ----------------------------------------------------------------
-
->>>>>>> Stashed changes
-
-
 #' 2D List Comprehension
 #' Emulates 2D list comprehension from Python.
 #' @param row Number of rows
