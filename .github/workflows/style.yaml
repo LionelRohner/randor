@@ -58,7 +58,7 @@ jobs:
             ${{ runner.os }}-
 
       - name: Style
-        run: styler::style_pkg(style = tidyverse_style)
+        run: styler::style_pkg()
         shell: Rscript {0}
 
       - name: Commit and push changes
