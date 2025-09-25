@@ -84,9 +84,7 @@ transform_to_base_ten <- function(x,base){
   return(transformed)
 }
 
-transform_to_base_ten(1000,base = 2)
-
-  # Main functions ------------------------------------------------------
+# Main functions ------------------------------------------------------
 
 # Combination of the function above plus one more step. We first get the number
 # of digits the integer x followed by its exponent. Then we reapply the previous
@@ -110,13 +108,13 @@ extract_digits <- function(x_vec){
   for (x in x_vec){
     # Get power of 10 series
     pwr_ten <- get_powers_of_ten(ndigits = get_digits(x))
-    
+
     # Modulo of input number for power of ten series (without 1 as mod 1 is always 0)
     modulo_vec <- x%%pwr_ten
-    
+
     # Divide Modulo by Geometric sequence (now including 1, to get down to single digit)
     digit_vec <- modulo_vec%/%(pwr_ten%/%10)
-    
+
     digit_vec_out <- c(digit_vec_out,digit_vec)
   }
   return(digit_vec_out)
@@ -137,7 +135,7 @@ extract_digits_matrix <- function(x){
   M_upper <- pwr_ten %o% rep(1,length(x)) # upper bound to 10
   M_lower <- pwr_ten%/%10 %o% rep(1,length(x)) # upper bound - 1 to 1
   A <- t(x %o% rep(1,length(pwr_ten))) # Matrix of input repeated (same dim as above)
-  
+
   # Create bool mask to rm superflous zeros introduced by redundancy
   # Everything that is TRUE is redundant, e.g. for an entry 10, we need to calculate
   # 10mod10 = 1 >> 1\1 = 0 ~ digit 2
@@ -146,13 +144,13 @@ extract_digits_matrix <- function(x){
   # The redundancy arises when multiple entries with differing digits are passed
   # to this function, since the matrices have to be padded with the power ten series
   mask_false_zeros <- A < M_lower
-  
+
   # Basically these are Hadamard operations (element-wise)
-  res <- A%%M_upper%/%M_lower 
-  
+  res <- A%%M_upper%/%M_lower
+
   # Rm superfluous zeros by NAS
-  res[mask_false_zeros] <- NA 
-  
+  res[mask_false_zeros] <- NA
+
   # Clear redundant 0
   out <- res[!is.na(res)]
   return(out)
