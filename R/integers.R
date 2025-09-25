@@ -186,14 +186,18 @@ is_divisible_by_digit <- function(x){
   return(NULL)
 }
 
-#' Title
+#' Plot the distribution of all digits in a vector of numbers
 #'
-#' @param vec
+#' This function takes a vector of numbers, extracts all the digits,
+#' and plots their distribution as a bar chart.
 #'
-#' @return
+#' @param vec A numeric vector.
+#'
+#' @return A ggplot object representing the distribution of the digits.
 #' @export
 #'
 #' @examples
+#' plot_all_digits(c(123, 456, 789))
 plot_all_digits <- function(vec){
   count_digits <- extract_digits_matrix(vec) %>%
     table() %>%
@@ -210,14 +214,18 @@ plot_all_digits <- function(vec){
 }
 
 
-#' Title
+#' Plot the distribution of the last digit of each number in a vector
 #'
-#' @param vec
+#' This function takes a vector of numbers, extracts the last digit of each number,
+#' and plots their distribution as a bar chart.
 #'
-#' @return
+#' @param vec A numeric vector.
+#'
+#' @return A ggplot object representing the distribution of the last digits.
 #' @export
 #'
 #' @examples
+#' plot_last_digits(c(123, 456, 789))
 plot_last_digits <- function(vec){
   count_digits <- extract_last_digits(vec) %>%
     table() %>%
