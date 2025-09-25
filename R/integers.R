@@ -39,7 +39,7 @@ get_powers_of_ten <- function(ndigits,
   assertthat::assert_that(min(ndigits) > 0, msg = "ndigits should be positive!")
   if (full_seq){
     # Count digits down to 0 to get the geometric sequence 1,10,100 etc
-    ndigits <- rev(seq(from = ndigits, to = if_else(include_one,0,1)))
+    ndigits <- rev(seq(from = ndigits, to = ifelse(include_one,0,1)))
     pwr_ten <- 10**ndigits
   } else {
     # Only take upper bound
@@ -84,7 +84,7 @@ transform_to_base_ten <- function(x,base){
   return(transformed)
 }
 
-transform_to_base_ten(1000,base = 2)
+# transform_to_base_ten(1000,base = 2)
 
   # Main functions ------------------------------------------------------
 
@@ -199,11 +199,12 @@ is_divisible_by_digit <- function(x){
 #' @examples
 #' plot_all_digits(c(123, 456, 789))
 plot_all_digits <- function(vec){
-  count_digits <- extract_digits_matrix(vec) %>%
-    table() %>%
+  count_digits <- vec |>
+    extract_digits_matrix() |>
+    table() |>
     as_tibble()
 
-  g_count_digits <- count_digits %>%
+  g_count_digits <- count_digits |>
     ggplot() +
     geom_bar(aes(x = ., y = n, fill = .),
              stat = "identity") +
@@ -227,11 +228,12 @@ plot_all_digits <- function(vec){
 #' @examples
 #' plot_last_digits(c(123, 456, 789))
 plot_last_digits <- function(vec){
-  count_digits <- extract_last_digits(vec) %>%
-    table() %>%
+  count_digits <- vec |>
+    extract_last_digits() |>
+    table() |>
     as_tibble()
 
-  g_count_digits <- count_digits %>%
+  g_count_digits <- count_digits |>
     ggplot() +
     geom_bar(aes(x = ., y = n, fill = .),
              stat = "identity") +
