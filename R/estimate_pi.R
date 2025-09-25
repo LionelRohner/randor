@@ -1,15 +1,5 @@
-#------------------------------------------------------------------------------#
-# Library -----------------------------------------------------------------
-#------------------------------------------------------------------------------#
+ # Empirical Methods -------------------------------------------------------
 
-
-library(rbenchmark)
-
-library(fitdistrplus)
-
-#------------------------------------------------------------------------------#
-# Empirical Methods -------------------------------------------------------
-#------------------------------------------------------------------------------#
 
 # Idea: Generate uniformly distributed points between 0 and 1 and consider them
 #       to be vectors pointing to that random coordinate. Next count the vectors
@@ -29,10 +19,10 @@ library(fitdistrplus)
 #' @examples
 #' generate_points(10)
 generate_points <- function(n){
-  
+
   # put them in a matrix
   XY <- matrix(runif(2*n), nrow = n, ncol = 2)
-  
+
   return(XY)
 
 }
@@ -48,7 +38,7 @@ generate_points <- function(n){
 #' pts <- generate_points(10)
 #' get_distance(pts)
 get_distance <- function(XY){
-  
+
   # calculate vector norm and test if its bigger than the radius (i.e. 1)
   dist <- sqrt(XY[,1]^2 + XY[,2]^2) < 1
   return(dist)
@@ -93,9 +83,9 @@ estimate_pi_empirical <- function(n){
 # Resampling Methods ------------------------------------------------------
 
 # Idea: The idea is to circumvent the generation of high numbers of points to
-#       get an accurate approximate of pi. Instead, we calculate rather innacurate 
+#       get an accurate approximate of pi. Instead, we calculate rather innacurate
 #       estimates of the ratio of points within to beyond the unit circle and generate
-#       a beta or gamma distribution of the ratios. Parameter estimation of 
+#       a beta or gamma distribution of the ratios. Parameter estimation of
 #       the beta distribution is based on the methods of moments to find starting
 #       values for alpha and beta in ~ Beta(alpha, beta). Once the distribution
 #       is setup, we sample from that said distribution and take the mean of the
@@ -119,11 +109,11 @@ estimate_pi_empirical <- function(n){
 calc_ratio <- function(n, samplingSize, plot){
   distMatrix <- matrix(get_distance(generate_points(n)), nrow = samplingSize)
   ratioVector <- rowSums(distMatrix)/ncol(distMatrix)
-  
+
   if (plot){
     hist(ratioVector, freq = F)
   }
-  
+
   return(ratioVector)
 }
 
@@ -140,16 +130,16 @@ calc_ratio <- function(n, samplingSize, plot){
 #' ratios <- calc_ratio(100, 10, FALSE)
 #' generate_gamma(ratios, 100, FALSE)
 generate_gamma <- function(ratioVector, outputLength, plot){
-  thetaGamma <- fitdistr(ratioVector, "gamma")$estimate 
-  
+  thetaGamma <- fitdistr(ratioVector, "gamma")$estimate
+
   set.seed(sample(1:1e6,1))
-  
+
   # histogram
   if (plot){
     hist(rgamma(outputLength,shape = thetaGamma[1],rate = thetaGamma[2]),
          add = T, col = rgb(0.9,0.1,0.1,0.2), freq = F)
   }
-  return(rgamma(outputLength,shape = thetaGamma[1],rate = thetaGamma[2]))  
+  return(rgamma(outputLength,shape = thetaGamma[1],rate = thetaGamma[2]))
 }
 
 #' Beta method of moments
@@ -163,10 +153,11 @@ generate_gamma <- function(ratioVector, outputLength, plot){
 #' ratios <- calc_ratio(100, 10, FALSE)
 #' beta_mom(ratios)
 beta_mom <- function(x) {
-  
+
   m_x <- mean(x, na.rm = TRUE)
   s_x <- sd(x, na.rm = TRUE)
-  
+
+  # TODO: untested done by Jules
   if (s_x == 0) {
     # Cannot estimate parameters if sd is 0, return some defaults
     return(list(shape1 = 1, shape2 = 1))
@@ -174,14 +165,17 @@ beta_mom <- function(x) {
 
   alpha <- m_x*((m_x*(1 - m_x)/s_x^2) - 1)
   beta <- (1 - m_x)*((m_x*(1 - m_x)/s_x^2) - 1)
-  
+
+  out <- list(shape1 = alpha, shape2 = beta)
+
+  # TODO: untested done by Jules
   # Check for negative or non-finite values and return defaults if so
   if (!is.finite(alpha) || !is.finite(beta) || alpha <= 0 || beta <= 0) {
-    return(list(shape1 = 1, shape2 = 1))
+    out <- list(shape1 = 1, shape2 = 1)
+    return(out)
   }
 
   return(list(shape1 = alpha, shape2 = beta))
-  
 }
 
 #' Generate beta distribution
@@ -197,21 +191,21 @@ beta_mom <- function(x) {
 #' ratios <- calc_ratio(100, 10, FALSE)
 #' generate_beta(ratios, 100, FALSE)
 generate_beta <- function(ratioVector, outputLength, plot){
-  
+
   # remove 1s and 0s (the latter is very unlikely)
   ratioVector <- ratioVector[which(ratioVector < 1)]
 
-  
+
   # use methods of moments to get an estimate for alpha (shape1) and beta (shape2)
   # fitdistr needs starting values for beta-distribution
   thetaBetaStartValues <- beta_mom(ratioVector)
-  
-  # MLE of beta distribution given ratioVector data 
-  thetaBeta <- fitdistr(ratioVector, "beta", start=thetaBetaStartValues)$estimate 
-  
-  
+
+  # MLE of beta distribution given ratioVector data
+  thetaBeta <- fitdistr(ratioVector, "beta", start=thetaBetaStartValues)$estimate
+
+
   # set.seed(sample(1:1e6,1))
-  
+
   # histogram
   if (plot){
     hist(rbeta(outputLength,shape1 = thetaBeta[1],shape2 = thetaBeta[2]),
@@ -219,7 +213,7 @@ generate_beta <- function(ratioVector, outputLength, plot){
   }
 
   # generate data from the beta-distribution with MLE-estimates
-  return(rbeta(outputLength, shape1 = thetaBeta[1], shape2 = thetaBeta[2]))  
+  return(rbeta(outputLength, shape1 = thetaBeta[1], shape2 = thetaBeta[2]))
 }
 
 
@@ -234,19 +228,18 @@ generate_beta <- function(ratioVector, outputLength, plot){
 #' ratios <- calc_ratio(100, 10, FALSE)
 #' get_beta_dist(ratios)
 get_beta_dist <- function(ratioVector){
-  
+
   # remove 1s and 0s (the latter is very unlikely)
   ratioVector <- ratioVector[which(ratioVector < 1)]
-  
-  
+
+
   # use methods of moments to get an estimate for alpha (shape1) and beta (shape2)
   # fitdistr needs starting values for beta-distribution
   thetaBetaStartValues <- beta_mom(ratioVector)
-  
-  # MLE of beta distribution given ratioVector data 
-  return(fitdistr(ratioVector, "beta", start=thetaBetaStartValues)$estimate) 
-}
 
+  # MLE of beta distribution given ratioVector data
+  return(fitdistr(ratioVector, "beta", start=thetaBetaStartValues)$estimate)
+}
 
 #' Approximate pi using resampling
 #'
@@ -261,12 +254,13 @@ get_beta_dist <- function(ratioVector){
 #' approx_pi_resample(rand_beta)
 approx_pi_resample <- function(randVec){
   withinCircle <- mean(randVec)
-  outsideCircle <- 1 - withinCircle 
-  
+  outsideCircle <- 1 - withinCircle
+
   return(4*(withinCircle/(withinCircle+outsideCircle)))
 }
 
 # Main Function Resampling ------------------------------------------------
+
 
 #' Estimate pi using resampling
 #' This function uses a probabilistic approach. The ratio of points that are
@@ -288,26 +282,19 @@ estimate_pi_resampled <- function(n,
                                   samplingSize = 1e5,
                                   distr = "beta",
                                   plot = F){
-  
-  # requires fitdistrplus...
-  if(!require(fitdistrplus)){ 
-    message("Install 'fitdistrplus' first!")
-    return(NULL)
-  }
-  
-  
+
+
   # generate ratios from n
-  # create gamma distribution
   if(distr == "beta"){
     rand <- generate_beta(calc_ratio(n, samplingSize = samplingSize, plot = plot),
                           plot = plot, outputLength = outputLength)
-    
+
   } else {
     rand <- generate_gamma(calc_ratio(n, samplingSize = samplingSize, plot = plot),
                            plot = plot, outputLength = outputLength)
-    
+
   }
-  
+
   # use resampled data to approx pi
   return(approx_pi_resample(rand))
 }
@@ -331,42 +318,42 @@ estimate_pi_resampled <- function(n,
 #' @examples
 #' MCMC_Pi(nIter = 100)
 MCMC_Pi <- function(nInit = 1e6, samplingSize = 1e4, nSD = 1000, nIter){
-  
+
   # 0.) initialize result vector and get a value for d
   x <- rep(0,nIter)
-  
+
   d <- sd(calc_ratio(nInit,nSD,F))
-  
+
   # 1.) create a prior distribution
-  
+
   # beta parameter from 1e6 ratios >> prior distribution params
   thetaBetaMLE <- get_beta_dist(calc_ratio(nInit,samplingSize,F))
-  
+
   # mean of beta distribution
   meanBeta <- unname(1/(1+(thetaBetaMLE[2]/thetaBetaMLE[1])))
-  
+
   pbeta(meanBeta,shape1 = thetaBetaMLE[1], shape2 = thetaBetaMLE[2])
-  
+
   # 2.) Propose first move (start with mean of prior)
   x[1] <- meanBeta
-  
+
   # 3.) Initiate loop
-  
+
   for (iter in 2:nIter){
-    
+
     # 4.) propose a move with uniform proposal kernel
-    x[iter] <- runif(n = 1, min = x[iter-1]-d/2, max=x[iter-1]+d/2) 
-    
+    x[iter] <- runif(n = 1, min = x[iter-1]-d/2, max=x[iter-1]+d/2)
+
     # 3.) Compute accuracy, accept move if accuracy is better else stay
     current <- abs(approx_pi_resample(x[iter]) - pi)
     previous <- abs(approx_pi_resample(x[iter-1]) - pi)
-    
+
     if (current < previous){
       next
     } else {
       x[iter] <- x[iter-1]
     }
-    
+
   }
   return(x)
 }
@@ -384,38 +371,38 @@ MCMC_Pi <- function(nInit = 1e6, samplingSize = 1e4, nSD = 1000, nIter){
 #' @examples
 #' MCMC_h_Pi(nIter = 100)
 MCMC_h_Pi <- function(nInit = 1e6, samplingSize = 1e4, nSD = 1000, nIter){
-  
+
   # 0.) initialize result vector and get a value for d
   x <- rep(0,nIter)
-  
+
   d <- sd(calc_ratio(nInit,nSD,F))
   d <- 0.2
-  
+
   # 1.) create a prior distribution
-  
+
   # beta parameter from 1e6 ratios >> prior distribution params
   thetaBetaMLE <- get_beta_dist(calc_ratio(nInit,samplingSize,F))
-  
+
   # mean of beta distribution
   meanBeta <- unname(1/(1+(thetaBetaMLE[2]/thetaBetaMLE[1])))
-  
-  
+
+
   # 2.) Propose first move (start with mean of prior)
   x[1] <- meanBeta
-  
+
   # 3.) Initiate loop
-  
+
   for (iter in 2:nIter){
-    
+
     # 4.) propose a move with uniform proposal kernel
-    x[iter] <- runif(n = 1, min = x[iter-1]-d/2, max=x[iter-1]+d/2) 
-    
+    x[iter] <- runif(n = 1, min = x[iter-1]-d/2, max=x[iter-1]+d/2)
+
     # 5.) hastings ratio
     current <- dbeta(x[iter],shape1 = thetaBetaMLE[1], shape2 = thetaBetaMLE[2])
     previous <- dbeta(x[iter-1],shape1 = thetaBetaMLE[1], shape2 = thetaBetaMLE[2])
-    
+
     h <- min(1,current/previous)
-    
+
     # 6.) decide move
     u <- runif(1,0,1)
     if (u <= h){
@@ -423,15 +410,15 @@ MCMC_h_Pi <- function(nInit = 1e6, samplingSize = 1e4, nSD = 1000, nIter){
     } else {
       x[iter] <- x[iter-1] # reject >> repeat
     }
-   
-    
+
+
   }
   return(x)
 }
 
-#------------------------------------------------------------------------------#
+
 # Auxiliary Functions -----------------------------------------------------
-#------------------------------------------------------------------------------#
+
 
 # Methods to measure the accuracy of the estimates
 
@@ -473,7 +460,7 @@ scoring <- function(res){
     return(5)
   } else{
     return(6)
-  } 
+  }
 }
 
 #' Test accuracy of pi estimation
@@ -496,7 +483,7 @@ test_accuracy <- function(n,
                           samplingSize = 1e4,
                           outputLength = 1e6,
                           distr = "beta"){
-  
+
   # Scoring Output
   message("Scoring Calculation: Difference = estimated pi minus real pi \n")
   message("Scores:")
@@ -508,10 +495,10 @@ test_accuracy <- function(n,
   message("Difference > 0.000001 : Score = 5")
   message("Difference < 0.000001 : Score = 6 \n")
 
-  
+
   # create vector for accuracy measure
-  vecAccuracy = c() 
-  
+  vecAccuracy = c()
+
   # loop for nIter
   if (type == "empirical"){
     message("Method : Empirical \n")
@@ -536,10 +523,10 @@ test_accuracy <- function(n,
   # output formatting
   DF <- data.frame(nIter, mean(vecAccuracy), sd(vecAccuracy), min(vecAccuracy), max(vecAccuracy))
   colnames(DF) <- c("Iterations", "Mean Score", "SD Score", "Min Score", "Max Score")
-  
+
   message("Accuracy of the Pi Estimate: ")
   return(DF)
-   
+
 }
 
 #' Mean estimate of pi
@@ -562,9 +549,9 @@ mean_estimate <- function(n,
                           samplingSize = 1e4,
                           outputLength = 1e6,
                           distr = "beta"){
-  
-  vecAccuracy = c() 
-  
+
+  vecAccuracy = c()
+
   if (type == "empirical"){
     for (i in 1:nIter){
       estimate <- accuracy_pi_estimate(estimate_pi_empirical(n))
@@ -629,14 +616,14 @@ abline(h=pi, col = "firebrick")
 
 n = 1e6
 
-test <- benchmark("empirical" = {estimate_pi_empirical(n)},
+test <- rbenchmark::benchmark("empirical" = {estimate_pi_empirical(n)},
                   "resampled" = {estimate_pi_resampled(n)},
                   "MCMC"      = {MCMC_Pi(nIter = 1e5)},
                   replications = 10)
 
 test$meanTime <- test$elapsed/test$replications
 test
- 
+
 
 # BenchMark (Accuracy) ----------------------------------------------------
 
@@ -672,7 +659,7 @@ for (i in seqN){
                                 outputLength = 1e6,
                                 samplingSize = i,
                                 plot = F)
-    piVec <- c(piVec,pi) 
+    piVec <- c(piVec,pi)
   }
   cat(sprintf("\r%.3f%%", (i / (1e5) * 100)))
   RES <- rbind(RES,abs(mean(piVec)-pi))
