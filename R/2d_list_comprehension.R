@@ -3,8 +3,29 @@
 # Function ----------------------------------------------------------------
 #------------------------------------------------------------------------------#
 
-# kinda emulates 2d list comprehension from Python
-
+#' 2D List Comprehension
+#' Emulates 2D list comprehension from Python.
+#' @param row Number of rows
+#' @param col Number of columns
+#' @param x Expression to evaluate for each element
+#' @param cond Condition to filter elements
+#'
+#' @return A matrix
+#' @export
+#'
+#' @examples
+#' # Default value is from 1 to row*col
+#' list_comp_2d(row = 3,col = 3)
+#' # zero matrix
+#' list_comp_2d(row = 3,col = 3, x = 0)
+#' # tetration
+#' list_comp_2d(row = 3,col = 3, x = "i^i")
+#' # ln(x)
+#' list_comp_2d(row = 3,col = 3, x = "log(i)")
+#' # cond test 1
+#' list_comp_2d(row = 3,col = 3, cond = "i %% 2 == 0")
+#' # cond test 2
+#' list_comp_2d(row = 3,col = 3, cond = "i != 3 & i != 5")
 list_comp_2d <- function(row, col, x = NULL, cond = NULL){
   
   if (require(comprehenr) == F){

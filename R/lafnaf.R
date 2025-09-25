@@ -7,17 +7,18 @@
 
 # Main Functions ----------------------------------------------------------
 
-#' Title
+#' Create a basis
 #' Create linear independent vectors aka a basis 
-#' @param dim 
-#' @param negative 
-#' @param upper 
-#' @param returnMat 
+#' @param dim The dimension of the basis.
+#' @param negative A logical indicating whether to include negative values.
+#' @param upper The upper bound for the random numbers.
+#' @param returnMat A logical indicating whether to return a matrix or a list of vectors.
 #'
-#' @return
+#' @return A basis, either as a matrix or a list of vectors.
 #' @export
 #'
 #' @examples
+#' create_basis(3)
 create_basis <- function(dim, negative = T, upper = 9, returnMat = F){
   
   if (negative){
@@ -44,14 +45,16 @@ create_basis <- function(dim, negative = T, upper = 9, returnMat = F){
   return(out)
 }
 
-#' Title
-#' Is Positive Definite?
-#' @param A 
+#' Check if a matrix is positive definite
 #'
-#' @return
+#' @param A A numeric matrix.
+#'
+#' @return A logical indicating whether the matrix is positive definite.
 #' @export
 #'
 #' @examples
+#' A <- matrix(c(2, -1, -1, 2), nrow = 2)
+#' is_pos_def(A)
 is_pos_def <- function(A){# test 1 - symmetry
   
   # test 1 - is symmetric?
@@ -87,14 +90,16 @@ is_pos_def <- function(A){# test 1 - symmetry
   return(all(test1,test2,test3))
 }
 
-#' Title
 #' Create canonical form (A = UDU^-1)
-#' @param A 
 #'
-#' @return
+#' @param A A numeric matrix.
+#'
+#' @return A list with the matrices U, D, and U_inv, representing the canonical form of A.
 #' @export
 #'
 #' @examples
+#' A <- matrix(c(2, -1, -1, 2), nrow = 2)
+#' canonical_form(A)
 canonical_form <- function(A){
   # create UDU
   
@@ -116,15 +121,17 @@ canonical_form <- function(A){
 
 # TODO: CHECK IF A IS DEFECTIVE, AS OTHERWISE U-1 DOES NOT EXIST!!
 
-#' Title
 #' Fast exponentiation using canonical form
-#' @param A 
-#' @param p 
 #'
-#' @return
+#' @param A A numeric matrix.
+#' @param p The power to raise the matrix to.
+#'
+#' @return The matrix A raised to the power of p.
 #' @export
 #'
 #' @examples
+#' A <- matrix(c(2, -1, -1, 2), nrow = 2)
+#' fast_exp(A, 2)
 fast_exp <- function(A,p){
   UDU = canonical_form(A)
   
@@ -141,15 +148,17 @@ fast_exp <- function(A,p){
   return(UDU_inv)
 }
 
-#' Title
 #' Calculate matrix powers
-#' @param A 
-#' @param n 
 #'
-#' @return
+#' @param A A numeric matrix.
+#' @param n The power to raise the matrix to.
+#'
+#' @return The matrix A raised to the power of n.
 #' @export
 #'
 #' @examples
+#' A <- matrix(c(2, -1, -1, 2), nrow = 2)
+#' mat_pow(A, 2)
 mat_pow <- function(A, n){
   # TODO: Cheap workaround...
   n = n-1
@@ -172,16 +181,19 @@ mat_pow <- function(A, n){
 
 #  ---------------------------------------
 
-#' Title
-#' Single Cautchy-Schwartz inequality test. Check two vectors
-#' @param u 
-#' @param v 
-#' @param tol 
+#' Cauchy-Schwarz inequality test for linear dependence
+#' Single Cauchy-Schwarz inequality test. Check two vectors.
+#' @param u A numeric vector.
+#' @param v A numeric vector.
+#' @param tol The tolerance for the comparison.
 #'
-#' @return
+#' @return A logical indicating whether the vectors are linearly dependent.
 #' @export
 #'
 #' @examples
+#' u <- c(1, 2)
+#' v <- c(2, 4)
+#' lin_dep_Cautchy_Schwartz(u, v)
 lin_dep_Cautchy_Schwartz <- function(u,v, tol = 1e-05){
   # Consists of checking whether <u,v> >= ||u|| ||v||
   # Strict equality indicate linear dependence, i.e. <u,v> = ||u|| ||v||
@@ -202,15 +214,17 @@ lin_dep_Cautchy_Schwartz <- function(u,v, tol = 1e-05){
   }
 }
 
-#' Title
-#' Cautchy-Schwartz-Inequality to identify parallel cols/rows. Check for more than
+#' Cauchy-Schwarz inequality test for linear dependence in a matrix
+#' Cauchy-Schwarz-Inequality to identify parallel cols/rows. Check for more than
 #' two vecs
-#' @param A 
+#' @param A A numeric matrix.
 #'
-#' @return
+#' @return A data frame with the indices of the linearly dependent rows/cols, or NULL if none are found.
 #' @export
 #'
 #' @examples
+#' A <- matrix(c(1, 2, 2, 4), nrow = 2, byrow = TRUE)
+#' lin_dep_Cautchy_Schwartz_matrix(A)
 lin_dep_Cautchy_Schwartz_matrix <- function(A){
   # Consists of checking whether <u,v> >= ||u|| ||v||
   # Strict equality indicate linear dependence, i.e. <u,v> = ||u|| ||v||
@@ -267,14 +281,16 @@ lin_dep_Cautchy_Schwartz_matrix <- function(A){
   }
 }
 
-#' Title
+#' Create an adjugate matrix
 #' Create an adjugate matrix (transpose of a cofactor matrix)
-#' @param A 
+#' @param A A numeric matrix.
 #'
-#' @return
+#' @return The adjugate of the matrix.
 #' @export
 #'
 #' @examples
+#' A <- matrix(c(2, -1, -1, 2), nrow = 2)
+#' adjugate(A)
 adjugate <- function(A){
   
   n = nrow(A)
@@ -311,14 +327,16 @@ adjugate <- function(A){
 # identified by the Cautchy-Schwartz Inequality (e.g. [2,4] = 2*[1,2]), but not
 # if lin. dep. arise from combinations of vectors (e.g. [4,0] = [2,-2] + [2,2]).
 
-#' Title
+#' Create a generalized inverse of a matrix
 #' Create generalized inverse from a mxn matrix
-#' @param A 
+#' @param A A numeric matrix.
 #'
-#' @return
+#' @return The generalized inverse of the matrix.
 #' @export
 #'
 #' @examples
+#' A <- matrix(c(1, 2, 2, 4), nrow = 2, byrow = TRUE)
+#' generalized_inverse(A)
 generalized_inverse <- function(A){
   
   ### step 1 : Find a LIN submatrix of order rxr 
@@ -400,17 +418,20 @@ generalized_inverse <- function(A){
   return(G)
 }
 
-#' Title
-#' Check Penrose Condition of Inverses
-#' @param A 
-#' @param G 
-#' @param all_Penrose_check 
-#' @param digits 
+#' Check Penrose conditions of a generalized inverse
 #'
-#' @return
+#' @param A A numeric matrix.
+#' @param G The generalized inverse of A.
+#' @param all_Penrose_check A logical indicating whether to check all four Penrose conditions.
+#' @param digits The number of digits to round to.
+#'
+#' @return A logical indicating whether the Penrose conditions are met.
 #' @export
 #'
 #' @examples
+#' A <- matrix(c(1, 2, 2, 4), nrow = 2, byrow = TRUE)
+#' G <- generalized_inverse(A)
+#' check_Penrose_cond(A, G)
 check_Penrose_cond <- function(A,
                                G,
                                all_Penrose_check = F,
@@ -439,14 +460,16 @@ check_Penrose_cond <- function(A,
   }
 }
 
-#' Title
 #' Inverse of a square matrix
-#' @param A 
 #'
-#' @return
+#' @param A A square numeric matrix.
+#'
+#' @return The inverse of the matrix.
 #' @export
 #'
 #' @examples
+#' A <- matrix(c(2, -1, -1, 2), nrow = 2)
+#' inverse(A)
 inverse <- function(A){
   # Check for squareness
   if (nrow(A) != ncol(A)){
@@ -465,14 +488,16 @@ inverse <- function(A){
   return(adjA*det(A)^-1)
 }
 
-#' Title
+#' Orthogonalize a matrix
 #' Orthogonalize matrix (AAT or ATA)
-#' @param A 
+#' @param A A numeric matrix.
 #'
-#' @return
+#' @return An orthogonalized matrix.
 #' @export
 #'
 #' @examples
+#' A <- matrix(c(1, 2, 2, 4), nrow = 2, byrow = TRUE)
+#' orthogonalize(A)
 orthogonalize <- function(A){
   preQ = A%*%t(A)
   Q = eigen(preQ, symmetric = T)$vectors
@@ -485,28 +510,32 @@ orthogonalize <- function(A){
 
 # Rank --------------------------------------------------------------------
 
-#' Title
 #' Find the rank of a square matrix
-#' @param A 
-#' @param tol 
 #'
-#' @return
+#' @param A A square numeric matrix.
+#' @param tol The tolerance for the eigenvalues.
+#'
+#' @return The rank of the matrix.
 #' @export
 #'
 #' @examples
+#' A <- matrix(c(1, 2, 2, 4), nrow = 2, byrow = TRUE)
+#' rank_square_matrix(A)
 rank_square_matrix <- function(A, tol = 1e-12){
   rank_sq <- sum(abs(Re(eigen(A)$values)) > tol) # Re trims imaginary part from eigen
   return(rank_sq)
 }
 
-#' Title
+#' Find the rank of a matrix
 #'
-#' @param A 
+#' @param A A numeric matrix.
 #'
-#' @return
+#' @return The rank of the matrix.
 #' @export
 #'
 #' @examples
+#' A <- matrix(c(1, 2, 2, 4), nrow = 2, byrow = TRUE)
+#' rank_matrix(A)
 rank_matrix <- function(A){
   A = ref(A)
   zeroVecsIdx = find_zero_vectors(A)
@@ -518,14 +547,16 @@ rank_matrix <- function(A){
   }
 }
 
-#' Title
 #' Singular value decomposition
-#' @param A 
 #'
-#' @return
+#' @param A A numeric matrix.
+#'
+#' @return A list with the matrices P, D, and Q, representing the singular value decomposition of A.
 #' @export
 #'
 #' @examples
+#' A <- matrix(c(1, 2, 2, 4), nrow = 2, byrow = TRUE)
+#' singular_value_decomposition(A)
 singular_value_decomposition <- function(A){
   # create P (left signular vectors)
   P <- orthogonalize(A)
@@ -555,14 +586,16 @@ singular_value_decomposition <- function(A){
   return(res)
 }
 
-#' Title
-#' Get row echelon form of a amtrix
-#' @param A 
+#' Get row echelon form of a matrix
 #'
-#' @return
+#' @param A A numeric matrix.
+#'
+#' @return The row echelon form of the matrix.
 #' @export
 #'
 #' @examples
+#' A <- matrix(c(1, 2, 2, 4), nrow = 2, byrow = TRUE)
+#' ref(A)
 ref <- function(A){
   
   # Corner Case 1: all zero matrix
@@ -652,14 +685,16 @@ ref <- function(A){
   return(A)
 }
 
-#' Title
-#' Get reduced row echelon form from a matrix A
-#' @param A 
+#' Get reduced row echelon form of a matrix
 #'
-#' @return
+#' @param A A numeric matrix.
+#'
+#' @return The reduced row echelon form of the matrix.
 #' @export
 #'
 #' @examples
+#' A <- matrix(c(1, 2, 2, 4), nrow = 2, byrow = TRUE)
+#' rref(A)
 rref <- function(A){
   
   # Corner Case 1: all zero matrix
@@ -776,18 +811,20 @@ rref <- function(A){
 
 # Plotting Functions ------------------------------------------------------
 
-#' Title
-#' Plotting eigenvectors from 2x2 matrix 
-#' @param A 
-#' @param offset 
-#' @param plotBasisVecs 
-#' @param plotSpan 
-#' @param plotTransBasis 
+#' Plot eigenvectors of a 2x2 matrix
 #'
-#' @return
+#' @param A A 2x2 numeric matrix.
+#' @param offset The offset for the plot limits.
+#' @param plotBasisVecs A logical indicating whether to plot the basis vectors.
+#' @param plotSpan A logical indicating whether to plot the span of the vectors.
+#' @param plotTransBasis A logical indicating whether to plot the transformed basis vectors.
+#'
+#' @return A plot of the eigenvectors.
 #' @export
 #'
 #' @examples
+#' A <- matrix(c(2, -1, -1, 2), nrow = 2)
+#' plot_eigenvec(A)
 plot_eigenvec <- function(A,
                           offset = 1,
                           plotBasisVecs = T,
@@ -878,18 +915,21 @@ plot_eigenvec <- function(A,
   par(mfrow = c(1,1))
 }
 
-#' Title
 #' Plot matrix transformation Ax = y
-#' @param A 
-#' @param v 
-#' @param offset 
-#' @param plotBasisVecs 
-#' @param splitPlot 
 #'
-#' @return
+#' @param A A 2x2 numeric matrix.
+#' @param v A numeric vector.
+#' @param offset The offset for the plot limits.
+#' @param plotBasisVecs A logical indicating whether to plot the basis vectors.
+#' @param splitPlot A logical indicating whether to split the plot into two.
+#'
+#' @return A plot of the matrix transformation.
 #' @export
 #'
 #' @examples
+#' A <- matrix(c(2, -1, -1, 2), nrow = 2)
+#' v <- c(1, 1)
+#' plot_matrix_transformation(A, v)
 plot_matrix_transformation <- function(A,v,
                                        offset = 1,
                                        plotBasisVecs = T,
@@ -1008,31 +1048,34 @@ plot_matrix_transformation <- function(A,v,
 
 # Auxillary Functions -----------------------------------------------------
 
-#' Title
-#' Compare floats
-#' @param a 
-#' @param b 
-#' @param tol 
+#' Compare two floats
 #'
-#' @return
+#' @param a A float.
+#' @param b A float.
+#' @param tol The tolerance for the comparison.
+#'
+#' @return A logical indicating whether the floats are equal within the tolerance.
 #' @export
 #'
 #' @examples
+#' compare_floats(1.000001, 1)
 compare_floats <- function(a,b,tol=1e-06){
   return(abs(a-b) < tol)
 }
 
-#' Title
-#' Swap rows
-#' @param A 
-#' @param old 
-#' @param new 
-#' @param col 
+#' Swap rows or columns of a matrix
 #'
-#' @return
+#' @param A A numeric matrix.
+#' @param old The index of the row/column to swap.
+#' @param new The index of the row/column to swap with.
+#' @param col A logical indicating whether to swap columns instead of rows.
+#'
+#' @return The matrix with the rows/columns swapped.
 #' @export
 #'
 #' @examples
+#' A <- matrix(1:4, nrow = 2)
+#' swap(A, 1, 2)
 swap <- function(A,old,new, col = T) {
   tmp <- A[old,]
   A[old,] <- A[new,]
@@ -1040,44 +1083,50 @@ swap <- function(A,old,new, col = T) {
   return(A)
 }
 
-#' Title
-#' Add rows to the bottom of a matrix (used in rref)
-#' @param A 
-#' @param to_append 
+#' Add rows to the bottom of a matrix
+#' Used in rref.
+#' @param A A numeric matrix.
+#' @param to_append A vector of row indices to append to the bottom of the matrix.
 #'
-#' @return
+#' @return The matrix with the specified rows moved to the bottom.
 #' @export
 #'
 #' @examples
+#' A <- matrix(1:9, nrow = 3)
+#' add_to_bottom(A, 1)
 add_to_bottom <- function(A,to_append){
   out <- rbind(A[-to_append,],A[to_append,])
   return(out)
 }
 
-#' Title
-#' Check if column vector below pivot is all zero (used in rref)
-#' @param A 
-#' @param currentCol 
+#' Check if a column is all zero below the pivot
+#' Used in rref.
+#' @param A A numeric matrix.
+#' @param currentCol The current column.
 #'
-#' @return
+#' @return A logical indicating whether the column is all zero below the pivot.
 #' @export
 #'
 #' @examples
+#' A <- matrix(c(1, 0, 0, 1), nrow = 2)
+#' col_is_all_zero(A, 1)
 col_is_all_zero = function(A,currentCol){
   check <- all(A[-c(1:currentCol),currentCol] == 0)
   return(check)
 }
 
-#' Title
-#' Perform row operations (used in rref)
-#' @param A 
-#' @param idxNonzero 
-#' @param currentCol 
+#' Perform Gaussian elimination
+#' Used in rref.
+#' @param A A numeric matrix.
+#' @param idxNonzero A vector of non-zero indices.
+#' @param currentCol The current column.
 #'
-#' @return
+#' @return The matrix after Gaussian elimination.
 #' @export
 #'
 #' @examples
+#' A <- matrix(c(1, 2, 2, 4), nrow = 2, byrow = TRUE)
+#' gaussian_elimination(A, 2, 1)
 gaussian_elimination <- function(A, idxNonzero, currentCol){
   for (ele in idxNonzero){
     A[ele,] = A[ele,]-A[ele,currentCol]*A[currentCol,]
@@ -1085,28 +1134,31 @@ gaussian_elimination <- function(A, idxNonzero, currentCol){
   return(A)
 }
 
-# TODO: RM if only used in swap_zero_vectors
-#' Title
+#' Find zero vectors in a matrix
 #'
-#' @param A 
+#' @param A A numeric matrix.
 #'
-#' @return
+#' @return A vector of indices of the zero vectors.
 #' @export
 #'
 #' @examples
+#' A <- matrix(c(1, 0, 0, 0), nrow = 2)
+#' find_zero_vectors(A)
 find_zero_vectors = function(A){
   idx <- which(rowSums(sqrt(A^2)) == 0)
   return(idx)
 }
 
-#' Title
-#' Used to put zero vectors at the bottom if found in matrix
-#' @param A 
+#' Swap zero vectors to the bottom of a matrix
+#' Used to put zero vectors at the bottom if found in matrix.
+#' @param A A numeric matrix.
 #'
-#' @return
+#' @return The matrix with the zero vectors at the bottom.
 #' @export
 #'
 #' @examples
+#' A <- matrix(c(1, 0, 0, 0), nrow = 2, byrow = TRUE)
+#' swap_zero_vectors(A)
 swap_zero_vectors <- function(A){
   
   zeroVecIdx = find_zero_vectors(A)
@@ -1118,14 +1170,16 @@ swap_zero_vectors <- function(A){
   }
 }
 
-#' Title
+#' Remove parallel vectors from a matrix
 #'
-#' @param A 
+#' @param A A numeric matrix.
 #'
-#' @return
+#' @return The matrix with parallel vectors removed.
 #' @export
 #'
 #' @examples
+#' A <- matrix(c(1, 2, 2, 4), nrow = 2, byrow = TRUE)
+#' remove_parallel_vectors(A)
 remove_parallel_vectors <- function(A){
   # find parallel vectors
   rmIdx = unique(lin_dep_Cautchy_Schwartz_matrix(A)$j)
@@ -1141,14 +1195,15 @@ remove_parallel_vectors <- function(A){
   }
 }
 
-#' Title
+#' Flip the sign of a scalar
 #'
-#' @param scalar 
+#' @param scalar A scalar.
 #'
-#' @return
+#' @return The scalar with the sign flipped.
 #' @export
 #'
 #' @examples
+#' flip_sign(-5)
 flip_sign <- function(scalar){
   if (scalar > 0){
     return(scalar)
