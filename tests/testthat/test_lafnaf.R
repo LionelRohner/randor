@@ -1,77 +1,91 @@
+library(testthat)
 
-# TODO: Clean up!!!!!
+context("lafnaf")
 
-# Libs --------------------------------------------------------------------
+test_that("create_basis creates a valid basis", {
+  basis <- create_basis(dim = 3, returnMat = TRUE)
+  expect_true(is.matrix(basis))
 
-library(MASS)
+  actual_dim <- dim(basis)
+  expected_dim <- c(3, 3)
+  expect_equal(actual_dim, expected_dim)
 
-# Unit-tests --------------------------------------------------------------
+  # A non-zero determinant implies linear independence
+  expect_true(det(basis) != 0)
+})
 
-# UNIT TEST FOR canonical form
-message(all(round(canonical_form(A)) == A))
-
-# UNIT TEST FOR generalized_inverse ----
-
-A <- t(matrix(c(2,3,1,-1,
-                5,8,0,1,
-                1,2,-2,3), nrow = 4))
-
-generalized_Inverse(A)
-
-A%*%MASS::ginv(A)%*%A
-A%*%generalized_Inverse(A)%*%A
-
-# UNIT TEST DRAFTS FOR singular_value_decomposition ----
-svd(A)
-res = singular_value_decomposition(A)
-
-orthogonalize(t(A))
-
-
-Y = A - res$P %*% res$D %*% t(res$Q)
-
-s_k_left = sign(t(res$P[,1])%*%Y[,1])*(res$P[,1]%*%Y[,1])^2
-
-s_k_right = sign(res$Q[,1]%*%Y[,1])*(res$Q[,1]%*%Y[,1])^2
-
-
-K = length(diag(res$D))
-
-res$P[,1] * t(res$Q[,1])
-
-for (k in 1:K){
+test_that("is_pos_def works correctly", {
+  # A positive definite matrix
+  A_pos_def <- matrix(c(2, -1, 0, -1, 2, -1, 0, -1, 2), ncol = 3)
+  expect_true(is_pos_def(A_pos_def))
   
-  for (m in 1:K){
-    if (m == k){
-      next
-    }
-    
-    sum_left = sum(diag(res$D)[m] * res$P[,m] %*% res$Q[,m]) 
-    
-  }
+  # A non-positive definite matrix
+  A_not_pos_def <- matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9), ncol = 3)
+  expect_false(is_pos_def(A_not_pos_def))
+})
+
+test_that("mat_pow calculates matrix powers correctly", {
+  A <- matrix(c(1, 1, 0, 1), ncol = 2)
+  actual <- mat_pow(A, 2)
+  expected <- matrix(c(1, 2, 0, 1), ncol = 2)
+  expect_equal(actual, expected)
+})
+
+test_that("adjugate works correctly", {
+  A2 <- matrix(c(1, 2, 3, 4), ncol = 2)
+  actual_adjA2 <- adjugate(A2)
+  expected_adjA2 <- matrix(c(4, -2, -3, 1), ncol = 2)
+  expect_equal(actual_adjA2, expected_adjA2)
   
-  
-}  
+  A3 <- matrix(c(1, 2, 3, 0, 4, 5, 1, 0, 6), ncol = 3)
+  actual_adjA3 <- adjugate(A3)
+  expected_adjA3 <- matrix(c(24, -12, -2, 5, 3, -5, -4, 2, 4), ncol = 3)
+  expect_equal(actual_adjA3, expected_adjA3)
+})
 
-for (j in 1:ncol(Y)){
-  
-  for (m in 1:K){
-    if (m == j){
-      next
-    }
-    
-    Y = A - res$P[,m] %*% res$D[,m] %*% t(res$Q[,m])
-  }
-  
-}
+test_that("inverse works correctly", {
+  A <- matrix(c(1, 2, 0, 1), ncol = 2)
+  actual <- inverse(A)
+  expected <- matrix(c(1, -2, 0, 1), ncol = 2)
+  expect_equal(actual, expected)
+})
 
-s_k_left = res$P[,1] %*% Y[,1]
+test_that("rank_matrix works correctly", {
+  A <- matrix(c(1, 2, 3, 2, 4, 6), nrow = 2, byrow = TRUE)
+  actual_A <- rank_matrix(A)
+  expected_A <- 1
+  expect_equal(actual_A, expected_A)
 
-sign_Flip <- function(A, res){
-  
-}
+  B <- matrix(c(1, 0, 0, 1), ncol = 2)
+  actual_B <- rank_matrix(B)
+  expected_B <- 2
+  expect_equal(actual_B, expected_B)
+})
 
+test_that("canonical_form works correctly", {
+  A <- matrix(c(1, 0, 0, 2), ncol = 2)
+  cano <- canonical_form(A)
+  # Check that UDU^-1 = A
+  actual <- cano$U %*% cano$D %*% cano$U_inv
+  expected <- A
+  expect_equal(actual, expected)
+})
 
-# PLot test/example
+test_that("singular_value_decomposition works correctly", {
+  A <- matrix(c(1, 0, 0, 1), ncol = 2)
+  svd_res <- singular_value_decomposition(A)
 
-plot_Matrix_Transformation(A,c(1,3),offset = 2)
+  # Check that P and Q are orthogonal
+  actual_P_ortho <- round(svd_res$P %*% t(svd_res$P))
+  expected_P_ortho <- diag(2)
+  expect_equal(actual_P_ortho, expected_P_ortho)
+
+  actual_Q_ortho <- round(svd_res$Q %*% t(svd_res$Q))
+  expected_Q_ortho <- diag(2)
+  expect_equal(actual_Q_ortho, expected_Q_ortho)
+
+  # Check that P D t(Q) = A
+  actual_recon <- round(svd_res$P %*% svd_res$D %*% t(svd_res$Q))
+  expected_recon <- A
+  expect_equal(actual_recon, expected_recon)
+})
