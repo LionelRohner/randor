@@ -130,7 +130,8 @@ calc_ratio <- function(n, samplingSize, plot){
 #' ratios <- calc_ratio(100, 10, FALSE)
 #' generate_gamma(ratios, 100, FALSE)
 generate_gamma <- function(ratioVector, outputLength, plot){
-  thetaGamma <- fitdistr(ratioVector, "gamma")$estimate
+
+  thetaGamma <- MASS::fitdistr(ratioVector, "gamma")$estimate
 
   set.seed(sample(1:1e6,1))
 
@@ -157,10 +158,12 @@ beta_mom <- function(x) {
   m_x <- mean(x, na.rm = TRUE)
   s_x <- sd(x, na.rm = TRUE)
 
+
   # TODO: untested done by Jules
   if (s_x == 0) {
     # Cannot estimate parameters if sd is 0, return some defaults
-    return(list(shape1 = 1, shape2 = 1))
+    out <- list(shape1 = 1, shape2 = 1)
+    return(out)
   }
 
   alpha <- m_x*((m_x*(1 - m_x)/s_x^2) - 1)
@@ -175,7 +178,7 @@ beta_mom <- function(x) {
     return(out)
   }
 
-  return(list(shape1 = alpha, shape2 = beta))
+  return(out)
 }
 
 #' Generate beta distribution
@@ -201,10 +204,8 @@ generate_beta <- function(ratioVector, outputLength, plot){
   thetaBetaStartValues <- beta_mom(ratioVector)
 
   # MLE of beta distribution given ratioVector data
-  thetaBeta <- fitdistr(ratioVector, "beta", start=thetaBetaStartValues)$estimate
 
-
-  # set.seed(sample(1:1e6,1))
+  thetaBeta <-  MASS::fitdistr(ratioVector, "beta", start=thetaBetaStartValues)$estimate
 
   # histogram
   if (plot){
@@ -238,7 +239,8 @@ get_beta_dist <- function(ratioVector){
   thetaBetaStartValues <- beta_mom(ratioVector)
 
   # MLE of beta distribution given ratioVector data
-  return(fitdistr(ratioVector, "beta", start=thetaBetaStartValues)$estimate)
+  out <- MASS::fitdistr(ratioVector, "beta", start=thetaBetaStartValues)$estimate
+  return(out)
 }
 
 #' Approximate pi using resampling
@@ -260,7 +262,6 @@ approx_pi_resample <- function(randVec){
 }
 
 # Main Function Resampling ------------------------------------------------
-
 
 #' Estimate pi using resampling
 #' This function uses a probabilistic approach. The ratio of points that are
