@@ -62,7 +62,8 @@ approx_pi <- function(dist) {
 
 
 #' Estimate pi empirically
-#' The empirical version just generates data between 0 and 1 and calculates the distance to the radius of the unit circle.
+#' The empirical version just generates data between 0 and 1 and calculates the
+#' distance to the radius of the unit circle.
 #' More details here : https://en.wikipedia.org/wiki/Approximations_of_%CF%80#Summing_a_circle's_area
 #' @param n The number of points to generate.
 #'
@@ -560,7 +561,7 @@ mean_estimate <- function(n,
 # # Test functions ----------------------------------------------------------
 #
 # ### empirical
-# estimate_pi_empirical(1e6)
+estimate_pi_empirical(1e6)
 #
 # ### resampled
 # estimate_pi_resampled(n = 1e6,
@@ -569,12 +570,13 @@ mean_estimate <- function(n,
 #                       plot = FALSE,
 #                       distr = "beta")
 #
-# accuracy_pi_estimate(estimate_pi_resampled(n = 1e6,
-#                                     outputLength = 1e6,
+# accuracy_pi_estimate(
+#   estimate_pi_resampled(n = 1e6,
+#                         outputLength = 1e6,
 #                                     samplingSize = 1e4,
-#                                     plot = FALSE,
+#                                     plot = TRUE,
 #                                     distr = "beta"))
-#
+# #
 # ### MCMC-like cheat algo (super accurate)
 # posterior <- MCMC_Pi(nIter = 1e4)
 # approx_pi_resample(tail(posterior,n = 1))
