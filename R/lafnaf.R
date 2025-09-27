@@ -239,7 +239,7 @@ lin_dep_Cautchy_Schwartz_matrix <- function(A) {
   linDepIdx <- c()
 
   # Cauchy-Schwarzt Loop
-  for (i in seq_len((A))) {
+  for (i in seq_len(nrow(A))) {
     # skip if the vector is a zero vector
     if (all(A[i, ] == 0)) {
       next
@@ -303,7 +303,7 @@ adjugate <- function(A) {
   if (n == 2) {
     C <- (-1) * A
     diag(C) <- rev(diag(A))
-    return(t(C))
+    return(C)
   }
 
   # populate the cofactor matrix
@@ -462,6 +462,7 @@ check_Penrose_cond <- function(A,
 #' A <- matrix(c(2, -1, -1, 2), nrow = 2)
 #' inverse(A)
 inverse <- function(A) {
+  # browser()
   # Check for squareness
   if (nrow(A) != ncol(A)) {
     message("Matrix is not invertible")

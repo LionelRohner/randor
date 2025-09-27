@@ -4,7 +4,7 @@
 \alias{check_Penrose_cond}
 \title{Check Penrose conditions of a generalized inverse}
 \usage{
-check_Penrose_cond(A, G, all_Penrose_check = F, digits = 2)
+check_Penrose_cond(A, G, all_Penrose_check = FALSE, digits = 2)
 }
 \arguments{
 \item{A}{A numeric matrix.}

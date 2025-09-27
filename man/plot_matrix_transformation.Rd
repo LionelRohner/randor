@@ -4,7 +4,13 @@
 \alias{plot_matrix_transformation}
 \title{Plot matrix transformation Ax = y}
 \usage{
-plot_matrix_transformation(A, v, offset = 1, plotBasisVecs = T, splitPlot = T)
+plot_matrix_transformation(
+  A,
+  v,
+  offset = 1,
+  plotBasisVecs = TRUE,
+  splitPlot = TRUE
+)
 }
 \arguments{
 \item{A}{A 2x2 numeric matrix.}

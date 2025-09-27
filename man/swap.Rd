@@ -4,7 +4,7 @@
 \alias{swap}
 \title{Swap rows or columns of a matrix}
 \usage{
-swap(A, old, new, col = T)
+swap(A, old, new, col = TRUE)
 }
 \arguments{
 \item{A}{A numeric matrix.}

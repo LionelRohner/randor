@@ -212,7 +212,7 @@ plot_all_digits <- function(vec) {
       x = "digits"
     ) +
     ggplot2::theme_minimal()
-  print(g_count_digits)
+  return(g_count_digits)
 }
 
 #' Plot the distribution of the last digit of each number in a vector
@@ -243,5 +243,5 @@ plot_last_digits <- function(vec) {
       x = "digits"
     ) +
     ggplot2::theme_minimal()
-  print(g_count_digits)
+  return(g_count_digits)
 }

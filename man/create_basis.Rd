@@ -5,7 +5,7 @@
 \title{Create a basis
 Create linear independent vectors aka a basis}
 \usage{
-create_basis(dim, negative = T, upper = 9, returnMat = F)
+create_basis(dim, negative = TRUE, upper = 9, returnMat = FALSE)
 }
 \arguments{
 \item{dim}{The dimension of the basis.}

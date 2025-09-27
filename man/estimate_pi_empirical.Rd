@@ -3,7 +3,8 @@
 \name{estimate_pi_empirical}
 \alias{estimate_pi_empirical}
 \title{Estimate pi empirically
-The empirical version just generates data between 0 and 1 and calculates the distance to the radius of the unit circle.
+The empirical version just generates data between 0 and 1 and calculates the
+distance to the radius of the unit circle.
 More details here : https://en.wikipedia.org/wiki/Approximations_of_\%CF\%80#Summing_a_circle's_area}
 \usage{
 estimate_pi_empirical(n)
@@ -16,7 +17,8 @@ An approximation of pi.
 }
 \description{
 Estimate pi empirically
-The empirical version just generates data between 0 and 1 and calculates the distance to the radius of the unit circle.
+The empirical version just generates data between 0 and 1 and calculates the
+distance to the radius of the unit circle.
 More details here : https://en.wikipedia.org/wiki/Approximations_of_\%CF\%80#Summing_a_circle's_area
 }
 \examples{

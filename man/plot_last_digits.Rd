@@ -2,13 +2,20 @@
 % Please edit documentation in R/integers.R
 \name{plot_last_digits}
 \alias{plot_last_digits}
-\title{Title}
+\title{Plot the distribution of the last digit of each number in a vector}
 \usage{
 plot_last_digits(vec)
 }
 \arguments{
-\item{vec}{}
+\item{vec}{A numeric vector.}
+}
+\value{
+A ggplot object representing the distribution of the last digits.
 }
 \description{
-Title
+This function takes a vector of numbers, extracts the last digit of each number,
+and plots their distribution as a bar chart.
+}
+\examples{
+plot_last_digits(c(123, 456, 789, 3, 9))
 }

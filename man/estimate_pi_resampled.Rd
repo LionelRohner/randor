@@ -12,7 +12,7 @@ estimate_pi_resampled(
   outputLength = 1e+06,
   samplingSize = 1e+05,
   distr = "beta",
-  plot = F
+  plot = FALSE
 )
 }
 \arguments{

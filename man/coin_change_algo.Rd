@@ -20,5 +20,5 @@ Coin change algorithm
 TODO: This function is not yet implemented correctly.
 }
 \examples{
-coin_change_algo(c(1,2),4)
+coin_change_algo(c(1, 2), 4)
 }

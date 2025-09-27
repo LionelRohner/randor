@@ -1,7 +1,5 @@
-# Methods -----------------------------------------------------------------
 
-
-# 1.1 - Construct derivative matrix ---------------------------------------
+# Construct derivative matrix ---------------------------------------------
 
 
 #' Title
@@ -31,9 +29,7 @@ construct_derivate_matrix <- function(order) {
   return(C)
 }
 
-
-# 1.2 - Process polynomial ------------------------------------------------
-
+# Process polynomial ------------------------------------------------------
 
 #' Title
 #'
@@ -77,9 +73,7 @@ prep_polynomial <- function(polynomial, order) {
   return(out)
 }
 
-
-
-# 1.3 - Differentiate the polynomial using linear algebra -----------------
+# Differentiate the polynomial using linear algebra -----------------------
 
 #' Title
 #'
@@ -126,7 +120,6 @@ matrix_derivative <- function(polyVec, d_dx, order) {
   return(out)
 }
 
-# Functions ---------------------------------------------------------------
 
 #' Title
 #'
@@ -138,13 +131,13 @@ matrix_derivative <- function(polyVec, d_dx, order) {
 #'
 #' @examples
 differentiate_polynomial <- function(polynomial, order) {
-  # 1.) Construct derivative matrix
+  # Construct derivative matrix
   d_dx <- construct_derivate_matrix(order = order)
 
-  # 2.) Process polynomial
+  # Process polynomial
   polyVec <- prep_polynomial(polynomial = polynomial, order = order)
 
-  # 3.) Differentiate and return result
+  # Differentiate and return result
   out <- matrix_derivative(polyVec = polyVec, d_dx = d_dx, order = order)
   return(out)
 }

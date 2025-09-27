@@ -2,13 +2,20 @@
 % Please edit documentation in R/integers.R
 \name{plot_all_digits}
 \alias{plot_all_digits}
-\title{Title}
+\title{Plot the distribution of all digits in a vector of numbers}
 \usage{
 plot_all_digits(vec)
 }
 \arguments{
-\item{vec}{}
+\item{vec}{A numeric vector.}
+}
+\value{
+A ggplot object representing the distribution of the digits.
 }
 \description{
-Title
+This function takes a vector of numbers, extracts all the digits,
+and plots their distribution as a bar chart.
+}
+\examples{
+plot_all_digits(c(123, 456, 789, 258))
 }

@@ -37,7 +37,7 @@ test_that("adjugate works correctly", {
   expected_adjA2 <- matrix(c(4, -2, -3, 1), ncol = 2)
   expect_equal(actual_adjA2, expected_adjA2)
 
-  A3 <- matrix(c(1, 2, 3, 0, 4, 5, 1, 0, 6), ncol = 3)
+  A3 <- matrix(c(1, 2, 3, 0, 4, 5, 1, 0, 6), nrow = 3)
   actual_adjA3 <- adjugate(A3)
   expected_adjA3 <- matrix(c(24, -12, -2, 5, 3, -5, -4, 2, 4), ncol = 3)
   expect_equal(actual_adjA3, expected_adjA3)
@@ -89,3 +89,4 @@ test_that("singular_value_decomposition works correctly", {
   expected_recon <- A
   expect_equal(actual_recon, expected_recon)
 })
+

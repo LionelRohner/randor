@@ -281,12 +281,16 @@ estimate_pi_resampled <- function(n,
                                   plot = FALSE) {
   # generate ratios from n
   if (distr == "beta") {
-    rand <- generate_beta(calc_ratio(n, samplingSize = samplingSize, plot = plot),
-      plot = plot, outputLength = outputLength
+    rand <- generate_beta(
+      calc_ratio(n, samplingSize = samplingSize, plot = plot),
+      plot = plot,
+      outputLength = outputLength
     )
   } else {
-    rand <- generate_gamma(calc_ratio(n, samplingSize = samplingSize, plot = plot),
-      plot = plot, outputLength = outputLength
+    rand <- generate_gamma(
+      calc_ratio(n, samplingSize = samplingSize, plot = plot),
+      plot = plot,
+      outputLength = outputLength
     )
   }
 

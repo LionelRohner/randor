@@ -25,15 +25,15 @@ Emulates 2D list comprehension from Python.
 }
 \examples{
 # Default value is from 1 to row*col
-list_comp_2d(row = 3,col = 3)
+list_comp_2d(row = 3, col = 3)
 # zero matrix
-list_comp_2d(row = 3,col = 3, x = 0)
+list_comp_2d(row = 3, col = 3, x = 0)
 # tetration
-list_comp_2d(row = 3,col = 3, x = "i^i")
+list_comp_2d(row = 3, col = 3, x = "i^i")
 # ln(x)
-list_comp_2d(row = 3,col = 3, x = "log(i)")
+list_comp_2d(row = 3, col = 3, x = "log(i)")
 # cond test 1
-list_comp_2d(row = 3,col = 3, cond = "i \%\% 2 == 0")
+list_comp_2d(row = 3, col = 3, cond = "i \%\% 2 == 0")
 # cond test 2
-list_comp_2d(row = 3,col = 3, cond = "i != 3 & i != 5")
+list_comp_2d(row = 3, col = 3, cond = "i != 3 & i != 5")
 }

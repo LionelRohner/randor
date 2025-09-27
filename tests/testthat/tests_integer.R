@@ -1,7 +1,7 @@
 # Libs --------------------------------------------------------------------
 
 library(testthat)
-source("lib/integers.R", encoding = "UTF-8")
+context("integers")
 
 # Unit Tests --------------------------------------------------------------
 

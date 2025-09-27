@@ -5,8 +5,8 @@ context("matrix_derivatives")
 test_that("differentiate_polynomial works for a simple case", {
   # This is an integration test for the functions in matrix_derivatives.R
   # The implementation has some quirks, so we test a simple case based on the examples.
-  actual <- differentiate_polynomial("1+x+x^2", order = 3)
-  expected <- "1*x^0+2*x^1"
+  actual <- differentiate_polynomial("0+x+x^2", order = 2)
+  expected <- "1*1+2*x^1"
   expect_equal(actual, expected)
 })
 

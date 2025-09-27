@@ -7,9 +7,9 @@
 plot_eigenvec(
   A,
   offset = 1,
-  plotBasisVecs = T,
-  plotSpan = T,
-  plotTransBasis = T
+  plotBasisVecs = TRUE,
+  plotSpan = TRUE,
+  plotTransBasis = TRUE
 )
 }
 \arguments{
