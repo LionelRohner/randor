@@ -239,7 +239,7 @@ lin_dep_Cautchy_Schwartz_matrix <- function(A) {
   linDepIdx <- c()
 
   # Cauchy-Schwarzt Loop
-  for (i in 1:nrow(A)) {
+  for (i in seq_len((A))) {
     # skip if the vector is a zero vector
     if (all(A[i, ] == 0)) {
       next
@@ -492,7 +492,7 @@ inverse <- function(A) {
 orthogonalize <- function(A) {
   preQ <- A %*% t(A)
   Q <- eigen(preQ, symmetric = T)$vectors
-  for (row in 1:nrow(Q)) {
+  for (row in seq_len(nrow(Q))) {
     # Normalize Rows
     Q[row, ] <- 1 / sqrt(c(Q[row, ] %*% Q[row, ])) * c(Q[row, ])
   }
@@ -595,7 +595,8 @@ ref <- function(A) {
 
   # 1.) Setup variables
   nc <- ncol(A)
-  nr <- nrow(A)
+  # TODO: is this
+  # nr <- nrow(A)
 
   # first pivot must be on first column
   currentCol <- 1

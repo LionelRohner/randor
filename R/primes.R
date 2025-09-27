@@ -60,10 +60,6 @@ sieve_ov_Erathostenes <- function(to) {
 #' primes_to_100 <- sieve_ov_Erathostenes(100)
 #' get_circular_primes(primes_to_100)
 get_circular_primes <- function(primes) {
-  # Cache vector for primes - reduces the number of iteration if primes are already in
-  # this vectior. E.g. a circular prime with 3 digits will appear 3 times and should only
-  # be evaluated once.
-  rot_vec_cache <- c()
 
   # empty vector for output$
   circular_primes <- c()
@@ -124,15 +120,16 @@ get_circular_primes <- function(primes) {
 coin_change_algo <- function(coins, N) {
   # create vars
   ways <- rep(0, N + 1)
-  lenCoils <- length(coins)
-  lenWays <- N + 1
+  len_coins <- length(coins)
+  # TODO: what was that about?
+  # lenWays <- N + 1
 
   # Initialize Algo
   ways[1] <- 1
 
   # do dynamic programming
-  for (i in 1:lenCoils) {
-    for (j in 1:length(ways)) {
+  for (i in 1:len_coins) {
+    for (j in seq_along(ways)) {
       if (coins[i] < j) {
         ways[j] <- ways[j] + ways[(j - coins[i])]
       }
@@ -141,5 +138,3 @@ coin_change_algo <- function(coins, N) {
   return(ways[N])
 }
 
-# TODO: shouldnt this be 3? 1,1,1; 1,1,2; 2,2
-coin_change_algo(c(1, 2), 4)
