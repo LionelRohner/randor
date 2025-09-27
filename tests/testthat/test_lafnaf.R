@@ -18,7 +18,7 @@ test_that("is_pos_def works correctly", {
   # A positive definite matrix
   A_pos_def <- matrix(c(2, -1, 0, -1, 2, -1, 0, -1, 2), ncol = 3)
   expect_true(is_pos_def(A_pos_def))
-  
+
   # A non-positive definite matrix
   A_not_pos_def <- matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9), ncol = 3)
   expect_false(is_pos_def(A_not_pos_def))
@@ -36,7 +36,7 @@ test_that("adjugate works correctly", {
   actual_adjA2 <- adjugate(A2)
   expected_adjA2 <- matrix(c(4, -2, -3, 1), ncol = 2)
   expect_equal(actual_adjA2, expected_adjA2)
-  
+
   A3 <- matrix(c(1, 2, 3, 0, 4, 5, 1, 0, 6), ncol = 3)
   actual_adjA3 <- adjugate(A3)
   expected_adjA3 <- matrix(c(24, -12, -2, 5, 3, -5, -4, 2, 4), ncol = 3)

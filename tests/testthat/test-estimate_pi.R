@@ -86,7 +86,7 @@ test_that("calc_ratio returns a vector of correct length", {
 
 test_that("approx_pi_resample works correctly", {
   # If the mean of the random vector is 0.785 (approx pi/4), then the result should be pi
-  randVec <- rep(pi/4, 10)
+  randVec <- rep(pi / 4, 10)
   actual <- approx_pi_resample(randVec)
   expected <- pi
   expect_equal(actual, expected)
