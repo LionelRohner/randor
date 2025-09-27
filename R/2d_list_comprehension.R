@@ -27,7 +27,7 @@ list_comp_2d <- function(row, col, x = NULL, cond = NULL) {
     return(out)
   } else if (!is.null(x) && is.null(cond)) {
     out <- t(matrix(comprehenr::to_vec(for (i in 1:(row * col)) eval(parse(text = x))), nrow = col))
-    return()
+    return(out)
   } else if (!is.null(cond) && is.null(x)) {
     # counting elements that are required of matrix of dim(row,col)
     elements <- row * col

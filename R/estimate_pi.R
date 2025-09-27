@@ -108,7 +108,7 @@ calc_ratio <- function(n, samplingSize, plot) {
   ratioVector <- rowSums(distMatrix) / ncol(distMatrix)
 
   if (plot) {
-    hist(ratioVector, freq = F)
+    hist(ratioVector, freq = FALSE)
   }
 
   return(ratioVector)
@@ -134,7 +134,7 @@ generate_gamma <- function(ratioVector, outputLength, plot) {
   # histogram
   if (plot) {
     hist(rgamma(outputLength, shape = thetaGamma[1], rate = thetaGamma[2]),
-      add = T, col = rgb(0.9, 0.1, 0.1, 0.2), freq = F
+      add = TRUE, col = rgb(0.9, 0.1, 0.1, 0.2), freq = FALSE
     )
   }
   return(rgamma(outputLength, shape = thetaGamma[1], rate = thetaGamma[2]))
@@ -205,7 +205,7 @@ generate_beta <- function(ratioVector, outputLength, plot) {
   # histogram
   if (plot) {
     hist(rbeta(outputLength, shape1 = thetaBeta[1], shape2 = thetaBeta[2]),
-      add = T, col = rgb(0.9, 0.1, 0.1, 0.2), freq = F
+      add = TRUE, col = rgb(0.9, 0.1, 0.1, 0.2), freq = FALSE
     )
   }
 
@@ -277,7 +277,7 @@ estimate_pi_resampled <- function(n,
                                   outputLength = 1e6,
                                   samplingSize = 1e5,
                                   distr = "beta",
-                                  plot = F) {
+                                  plot = FALSE) {
   # generate ratios from n
   if (distr == "beta") {
     rand <- generate_beta(calc_ratio(n, samplingSize = samplingSize, plot = plot),
@@ -315,12 +315,12 @@ MCMC_Pi <- function(nInit = 1e6, samplingSize = 1e4, nSD = 1000, nIter) {
   # 0.) initialize result vector and get a value for d
   x <- rep(0, nIter)
 
-  d <- sd(calc_ratio(nInit, nSD, F))
+  d <- sd(calc_ratio(nInit, nSD, FALSE))
 
   # 1.) create a prior distribution
 
   # beta parameter from 1e6 ratios >> prior distribution params
-  thetaBetaMLE <- get_beta_dist(calc_ratio(nInit, samplingSize, F))
+  thetaBetaMLE <- get_beta_dist(calc_ratio(nInit, samplingSize, FALSE))
 
   # mean of beta distribution
   meanBeta <- unname(1 / (1 + (thetaBetaMLE[2] / thetaBetaMLE[1])))
@@ -365,13 +365,13 @@ MCMC_h_Pi <- function(nInit = 1e6, samplingSize = 1e4, nSD = 1000, nIter) {
   # 0.) initialize result vector and get a value for d
   x <- rep(0, nIter)
 
-  d <- sd(calc_ratio(nInit, nSD, F))
+  d <- sd(calc_ratio(nInit, nSD, FALSE))
   d <- 0.2
 
   # 1.) create a prior distribution
 
   # beta parameter from 1e6 ratios >> prior distribution params
-  thetaBetaMLE <- get_beta_dist(calc_ratio(nInit, samplingSize, F))
+  thetaBetaMLE <- get_beta_dist(calc_ratio(nInit, samplingSize, FALSE))
 
   # mean of beta distribution
   meanBeta <- unname(1 / (1 + (thetaBetaMLE[2] / thetaBetaMLE[1])))
@@ -566,13 +566,13 @@ mean_estimate <- function(n,
 # estimate_pi_resampled(n = 1e6,
 #                       outputLength = 1e6,
 #                       samplingSize = 1e4,
-#                       plot = F,
+#                       plot = FALSE,
 #                       distr = "beta")
 #
 # accuracy_pi_estimate(estimate_pi_resampled(n = 1e6,
 #                                     outputLength = 1e6,
 #                                     samplingSize = 1e4,
-#                                     plot = F,
+#                                     plot = FALSE,
 #                                     distr = "beta"))
 #
 # ### MCMC-like cheat algo (super accurate)
@@ -625,6 +625,5 @@ mean_estimate <- function(n,
 # mean_estimate(n = 1e6, nIter = 10, type = "empirical")
 # mean_estimate(n = 1e6, nIter = 10, type = "resampled")
 #
-# $
 # # As expected the accuracies are more or less the same
 #

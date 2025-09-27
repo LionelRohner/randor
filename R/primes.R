@@ -60,7 +60,6 @@ sieve_ov_Erathostenes <- function(to) {
 #' primes_to_100 <- sieve_ov_Erathostenes(100)
 #' get_circular_primes(primes_to_100)
 get_circular_primes <- function(primes) {
-
   # empty vector for output$
   circular_primes <- c()
 
@@ -137,4 +136,3 @@ coin_change_algo <- function(coins, N) {
   }
   return(ways[N])
 }
-

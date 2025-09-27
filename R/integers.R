@@ -38,15 +38,7 @@ get_powers_of_ten <- function(ndigits,
   assertthat::assert_that(min(ndigits) > 0, msg = "ndigits should be positive!")
   if (full_seq) {
     # Count digits down to 0 to get the geometric sequence 1,10,100 etc
-<<<<<<< HEAD
-<<<<<<< HEAD
-    ndigits <- rev(seq(from = ndigits, to = ifelse(include_one,0,1)))
-=======
-    ndigits <- rev(seq(from = ndigits, to = if_else(include_one, 0, 1)))
->>>>>>> fixing_jules
-=======
     ndigits <- rev(seq(from = ndigits, to = dplyr::if_else(include_one, 0, 1)))
->>>>>>> fixing_jules
     pwr_ten <- 10**ndigits
   } else {
     # Only take upper bound
@@ -92,13 +84,7 @@ transform_to_base_ten <- function(x, base) {
   return(transformed)
 }
 
-<<<<<<< HEAD
-# transform_to_base_ten(1000,base = 2)
-
-  # Main functions ------------------------------------------------------
-=======
 # Main functions ------------------------------------------------------
->>>>>>> fixing_jules
 
 # Combination of the function above plus one more step. We first get the number
 # of digits the integer x followed by its exponent. Then we reapply the previous
@@ -209,15 +195,16 @@ is_divisible_by_digit <- function(x) {
 #' @export
 #'
 #' @examples
-#' plot_all_digits(c(123, 456, 789))
+#' plot_all_digits(c(123, 456, 789, 258))
 plot_all_digits <- function(vec) {
+  # browser()
   count_digits <- extract_digits_matrix(vec) |>
-    table() |>
-    tibble::as_tibble()
+    tibble::as_tibble_col(column_name = "digits") |>
+    dplyr::count(digits)
 
   g_count_digits <- count_digits |>
     ggplot2::ggplot() +
-    ggplot2::geom_bar(ggplot2::aes(x = ., y = n, fill = .),
+    ggplot2::geom_bar(ggplot2::aes(x = factor(digits), y = n, fill = n),
       stat = "identity"
     ) +
     ggplot2::labs(
@@ -227,7 +214,6 @@ plot_all_digits <- function(vec) {
     ggplot2::theme_minimal()
   print(g_count_digits)
 }
-
 
 #' Plot the distribution of the last digit of each number in a vector
 #'
@@ -240,15 +226,16 @@ plot_all_digits <- function(vec) {
 #' @export
 #'
 #' @examples
-#' plot_last_digits(c(123, 456, 789))
+#' plot_last_digits(c(123, 456, 789, 3, 9))
 plot_last_digits <- function(vec) {
+  digits <- NULL
   count_digits <- extract_last_digits(vec) |>
-    table() |>
-    tibble::as_tibble()
+    tibble::as_tibble_col(column_name = "digits") |>
+    dplyr::count(digits)
 
   g_count_digits <- count_digits |>
     ggplot2::ggplot() +
-    ggplot2::geom_bar(ggplot2::aes(x = ., y = n, fill = .),
+    ggplot2::geom_bar(ggplot2::aes(x = factor(digits), y = n, fill = n),
       stat = "identity"
     ) +
     ggplot2::labs(

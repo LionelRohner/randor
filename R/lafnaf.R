@@ -18,17 +18,17 @@
 #'
 #' @examples
 #' create_basis(3)
-create_basis <- function(dim, negative = T, upper = 9, returnMat = F) {
+create_basis <- function(dim, negative = TRUE, upper = 9, returnMat = FALSE) {
   if (negative) {
     lower <- -upper
   } else {
     lower <- 0
   }
 
-  basis <- matrix(sample(lower:upper, dim^2, replace = T), nrow = dim)
+  basis <- matrix(sample(lower:upper, dim^2, replace = TRUE), nrow = dim)
 
   while (det(basis) == 0) {
-    basis <- matrix(sample(lower:upper, dim^2, replace = T), nrow = dim)
+    basis <- matrix(sample(lower:upper, dim^2, replace = TRUE), nrow = dim)
   }
 
   if (returnMat) {
@@ -426,11 +426,11 @@ generalized_inverse <- function(A) {
 #' check_Penrose_cond(A, G)
 check_Penrose_cond <- function(A,
                                G,
-                               all_Penrose_check = F,
+                               all_Penrose_check = FALSE,
                                digits = 2) {
   message("Disclaimer: All matrices are transformed to pure integer matrices first, so consider that...\n")
 
-  if (all_Penrose_check == F) {
+  if (all_Penrose_check == FALSE) {
     Penrose_1 <- all(round(A %*% G %*% A, 2) == A)
     message("AGA=A is ", Penrose_1)
     return(Penrose_1)
@@ -491,7 +491,7 @@ inverse <- function(A) {
 #' orthogonalize(A)
 orthogonalize <- function(A) {
   preQ <- A %*% t(A)
-  Q <- eigen(preQ, symmetric = T)$vectors
+  Q <- eigen(preQ, symmetric = TRUE)$vectors
   for (row in seq_len(nrow(Q))) {
     # Normalize Rows
     Q[row, ] <- 1 / sqrt(c(Q[row, ] %*% Q[row, ])) * c(Q[row, ])
@@ -808,9 +808,9 @@ rref <- function(A) {
 #' plot_eigenvec(A)
 plot_eigenvec <- function(A,
                           offset = 1,
-                          plotBasisVecs = T,
-                          plotSpan = T,
-                          plotTransBasis = T) {
+                          plotBasisVecs = TRUE,
+                          plotSpan = TRUE,
+                          plotTransBasis = TRUE) {
   # assumptions for function:
   if (all(dim(A) != 2)) {
     message("A is not 2x2. Exiting...")
@@ -896,7 +896,7 @@ plot_eigenvec <- function(A,
   legend("topleft", c("Basis", "Transformed Basis", "Scaled Eigenvectors"),
     col = c(rgb(0, 0, 0, 1), rgb(0, 0, 0.8, 0.7), rgb(0.8, 0, 0.8, 0.7)),
     pch = c(16, 16, 16),
-    inset = c(1, 0), xpd = TRUE, horiz = F, bty = "n",
+    inset = c(1, 0), xpd = TRUE, horiz = FALSE, bty = "n",
     cex = 0.75
   )
 
@@ -921,8 +921,8 @@ plot_eigenvec <- function(A,
 #' plot_matrix_transformation(A, v)
 plot_matrix_transformation <- function(A, v,
                                        offset = 1,
-                                       plotBasisVecs = T,
-                                       splitPlot = T) {
+                                       plotBasisVecs = TRUE,
+                                       splitPlot = TRUE) {
   # assumptions for function:
   if (all(dim(A) != 2)) {
     message("A is not 2x2. Exiting...")
@@ -968,7 +968,7 @@ plot_matrix_transformation <- function(A, v,
   # legend
   legend("bottomright", c("Basis", "Vector x (Ax=y)"),
     col = c(rgb(0, 0, 0.8, 0.7), rgb(0.8, 0, 0.8, 0.7)),
-    pch = c(16, 16), inset = c(0, 1), xpd = TRUE, horiz = T, bty = "n",
+    pch = c(16, 16), inset = c(0, 1), xpd = TRUE, horiz = TRUE, bty = "n",
     cex = 0.75
   )
 
@@ -1047,7 +1047,7 @@ plot_matrix_transformation <- function(A, v,
   # legend
   legend("bottomright", c("Basis", "Vector y (Ax=y)"),
     col = c(rgb(0, 0, 0.8, 0.7), rgb(0.8, 0, 0.8, 0.7)),
-    pch = c(16, 16), inset = c(0, 1), xpd = TRUE, horiz = T, bty = "n",
+    pch = c(16, 16), inset = c(0, 1), xpd = TRUE, horiz = TRUE, bty = "n",
     cex = 0.75
   )
 
@@ -1085,7 +1085,7 @@ compare_floats <- function(a, b, tol = 1e-06) {
 #' @examples
 #' A <- matrix(1:4, nrow = 2)
 #' swap(A, 1, 2)
-swap <- function(A, old, new, col = T) {
+swap <- function(A, old, new, col = TRUE) {
   tmp <- A[old, ]
   A[old, ] <- A[new, ]
   A[new, ] <- tmp
