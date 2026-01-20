@@ -15,5 +15,5 @@ Imports:
     fitdistrplus,
     ggplot2,
     lubridate,
-    rbenchmark,
-    tibble
+    tibble,
+    MASS
