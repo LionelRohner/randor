@@ -2,11 +2,11 @@
 
 ( ͡° ͜ʖ ͡°)
 
-## A "Sammelsurium" of R Functions
+## Description
 
-This repository is a "Sammelsurium" – a wild mix of various R functions. It was created by merging several smaller, older repositories.
+This repository is a "Sammelsurium", i.e. a wild mix of various, of rather inefficient and poorly designed R functions from a bygone era. Created by merging several smaller repositories, it is now used to experiment with agents and other tools that may not offer the best data privacy practices.
 
-**Disclaimer:** Many of these functions are not optimized for performance and are primarily for educational or experimental purposes. They often serve as less efficient, plain R implementations of functions that are already available in other packages or even in base R. They were mostly written as a fun way to explore mathematical concepts.
+**Disclaimer:** Many of these functions are not optimized for performance. They often serve as less efficient, plain R implementations of functions that are already available in other packages or even in base R. They were mostly written for fun in order to explore mathematical concepts.
 
 ---
 
@@ -46,28 +46,28 @@ The functions in this repository are grouped into the following categories:
 The idea is that the polynomials of any degree can be described as a matrix-vector multiplication. More precisely, a matrix ($\mathbf{D}$) representing the differentiation of any terms of a polynomial is premultiplied by the vector ($\mathbf{p}$) describing the terms of the polynomial.
 
 **Differentiation Matrix:**
-$$
+```math
 \mathbf{D}=\frac{\mathbf{d}}{\mathbf{dx}}=\begin{bmatrix} 0 & 1 & 0 & 0 & 0 & \cdots \\ 0 & 0 & 2 & 0 & 0 & \cdots \\ 0 & 0 & 0 & 3 & 0 & \cdots \\ 0 & 0 & 0 & 0 & 4 & \cdots \\ 0 & 0 & 0 & 0 & 0 & \cdots \\ \vdots & \vdots & \vdots & \vdots & \ddots \end{bmatrix}
-$$
+```
 
 #### Example
 
 An example of a third degree polynomial.
-$$
+```math
 f(x) = 13+x+3x^2+4x^3
-$$
+```
 
 The derivative of the polynomial:
-$$
+```math
 \frac{\mathbf{d}}{\mathbf{dx}}(13+x+3x^2+4x^3)=0+1+6x+12x^2
-$$
+```
 
 In matrix notation, the coefficients corresponding to any term are represented in a vector form, where row number are the degrees of the terms. First row corresponds to the constant part of the polynomial.
-$$
+```math
 \vec{\mathbf{p}}= \begin{bmatrix}13 \\1 \\3 \\4 \\0 \\\vdots \end{bmatrix}
-$$
+```
 
 Calculation of $\mathbf{D} \vec{p}$:
-$$
+```math
 \begin{bmatrix} 0 & 1 & 0 & 0 & 0 & \cdots \\ 0 & 0 & 2 & 0 & 0 & \cdots \\ 0 & 0 & 0 & 3 & 0 & \cdots \\ 0 & 0 & 0 & 0 & 4 & \cdots \\ 0 & 0 & 0 & 0 & 0 & \cdots \\ \vdots & \vdots & \vdots & \vdots & \ddots \end{bmatrix} \begin{bmatrix}13 \\1 \\3 \\4 \\0 \\\vdots \end{bmatrix} = \begin{bmatrix}1 \\6 \\12 \\0 \\0 \\\vdots \end{bmatrix} =\begin{bmatrix}\text{Constant} \\\text{1st Order Term} \\\text{2nd Order Term} \\\text{3rd Order Term}\\\text{4th Order Term} \\\vdots \end{bmatrix}
-$$
+```
