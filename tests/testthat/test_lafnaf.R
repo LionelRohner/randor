@@ -89,4 +89,3 @@ test_that("singular_value_decomposition works correctly", {
   expected_recon <- A
   expect_equal(actual_recon, expected_recon)
 })
-

@@ -23,7 +23,7 @@ testthat::test_that("Test that sieve_ov_Erathostenes works as intended", {
   actual_x1 <- sieve_ov_Erathostenes(to = x1)
   expect_equal(actual_x1, exp_x1)
 
-  actual_x2_len <- sieve_ov_Erathostenes(to = x2) %>% length()
+  actual_x2_len <- sieve_ov_Erathostenes(to = x2) |> length()
   expect_equal(actual_x2_len, exp_x2_len)
 
   actual_x3 <- sieve_ov_Erathostenes(to = x3)
@@ -58,7 +58,7 @@ testthat::test_that("Test that get_circular_primes works as intended", {
   actual_p2 <- get_circular_primes(primes = p2)
   expect_equal(actual_p2, exp_p2)
 
-  actual_p3_len <- get_circular_primes(primes = p3) %>% length()
+  actual_p3_len <- get_circular_primes(primes = p3) |> length()
   expect_equal(actual_p3_len, exp_p3_len)
 
   expect_null(get_circular_primes(primes = p4))

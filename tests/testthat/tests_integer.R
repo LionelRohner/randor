@@ -176,21 +176,21 @@ testthat::test_that("Test that extract_digits works as intended", {
 
   # Expected
   exp_1 <- c(1)
-  exp_2 <- c(1, 2, 3, 4, 5, 6, 7, 8, 9) %>% sort()
-  exp_3 <- c(1, 2, 2, 3, 3, 3) %>% sort()
-  exp_4 <- c(1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 3) %>% sort()
+  exp_2 <- c(1, 2, 3, 4, 5, 6, 7, 8, 9) |> sort()
+  exp_3 <- c(1, 2, 2, 3, 3, 3) |> sort()
+  exp_4 <- c(1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 3) |> sort()
 
   # Test
   actual_1 <- extract_digits(x = x1)
   expect_equal(actual_1, exp_1)
 
-  actual_2 <- extract_digits(x = x2) %>% sort()
+  actual_2 <- extract_digits(x = x2) |> sort()
   expect_equal(actual_2, exp_2)
 
-  actual_3 <- extract_digits(x = x3) %>% sort()
+  actual_3 <- extract_digits(x = x3) |> sort()
   expect_equal(actual_3, exp_3)
 
-  actual_4 <- extract_digits(x = x4) %>% sort()
+  actual_4 <- extract_digits(x = x4) |> sort()
   expect_equal(actual_4, exp_4)
 
   expect_error(extract_digits(x = x5))
@@ -207,21 +207,21 @@ testthat::test_that("Test that extract_digits_matrix works as intended", {
 
   # Expected
   exp_1 <- c(1)
-  exp_2 <- c(1, 2, 3, 4, 5, 6, 7, 8, 9) %>% sort()
-  exp_3 <- c(1, 2, 2, 3, 3, 3) %>% sort()
-  exp_4 <- c(1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 3) %>% sort()
+  exp_2 <- c(1, 2, 3, 4, 5, 6, 7, 8, 9) |> sort()
+  exp_3 <- c(1, 2, 2, 3, 3, 3) |> sort()
+  exp_4 <- c(1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 3) |> sort()
 
   # Test
   actual_1 <- extract_digits_matrix(x = x1)
   expect_equal(actual_1, exp_1)
 
-  actual_2 <- extract_digits_matrix(x = x2) %>% sort()
+  actual_2 <- extract_digits_matrix(x = x2) |> sort()
   expect_equal(actual_2, exp_2)
 
-  actual_3 <- extract_digits_matrix(x = x3) %>% sort()
+  actual_3 <- extract_digits_matrix(x = x3) |> sort()
   expect_equal(actual_3, exp_3)
 
-  actual_4 <- extract_digits_matrix(x = x4) %>% sort()
+  actual_4 <- extract_digits_matrix(x = x4) |> sort()
   expect_equal(actual_4, exp_4)
 
   expect_error(extract_digits_matrix(x = x5))
