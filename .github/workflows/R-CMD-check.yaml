@@ -31,4 +31,5 @@ jobs:
         with:
           upload-snapshots: true
           build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
-          args: 'c("--no-stop-on-check-warnings", "--no-stop-on-check-notes")'
+          args: 'c("--no-manual", "--no-stop-on-check-warnings", "--no-stop-on-check-notes")'
+          error-on: '"error"'
