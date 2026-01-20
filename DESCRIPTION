@@ -12,7 +12,6 @@ Imports:
     assertthat,
     comprehenr,
     dplyr,
-    fitdistrplus,
     ggplot2,
     lubridate,
     tibble,
