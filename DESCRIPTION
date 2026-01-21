@@ -1,20 +1,18 @@
 Package: randor
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: Random R functions for everyday use ( ͡° ͜ʖ ͡°)
+Version: 0.0.1.0000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+    person("Lionel", "Rohner", , "lionel.rohner@gmail.com", role = c("aut", "cre"))
+Description: This repository is a "Sammelsurium" – a wild mix of various R functions. It was created by merging several smaller, older repositories.
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Imports:
     assertthat,
     comprehenr,
     dplyr,
-    fitdistrplus,
     ggplot2,
     lubridate,
-    rbenchmark,
-    tibble
+    tibble,
+    MASS

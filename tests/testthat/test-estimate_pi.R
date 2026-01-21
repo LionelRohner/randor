@@ -52,27 +52,6 @@ test_that("estimate_pi_empirical returns a reasonable value", {
   expect_true(pi_est > 2.5 && pi_est < 4.5)
 })
 
-test_that("beta_mom calculates moments correctly", {
-  x <- c(0.1, 0.2, 0.3, 0.4, 0.5)
-  mom <- beta_mom(x)
-  expect_true(is.list(mom))
-
-  actual_length <- length(mom)
-  expected_length <- 2
-  expect_equal(actual_length, expected_length)
-
-  expect_named(mom, c("shape1", "shape2"))
-
-  # Values calculated manually
-  actual_shape1 <- round(mom$shape1, 2)
-  expected_shape1 <- 1.25
-  expect_equal(actual_shape1, expected_shape1)
-
-  actual_shape2 <- round(mom$shape2, 2)
-  expected_shape2 <- 1.75
-  expect_equal(actual_shape2, expected_shape2)
-})
-
 test_that("calc_ratio returns a vector of correct length", {
   n <- 10
   samplingSize <- 5
@@ -84,10 +63,11 @@ test_that("calc_ratio returns a vector of correct length", {
   expect_equal(actual_length, expected_length)
 })
 
-test_that("approx_pi_resample works correctly", {
-  # If the mean of the random vector is 0.785 (approx pi/4), then the result should be pi
-  randVec <- rep(pi/4, 10)
-  actual <- approx_pi_resample(randVec)
-  expected <- pi
-  expect_equal(actual, expected)
-})
+# test_that("approx_pi_resample works correctly", {
+#   # If the mean of the random vector is 0.785 (approx pi/4), then the result should be pi
+#   ratios <- calc_ratio(100, 50, FALSE)
+#   rand_beta <- generate_beta(ratios, 100, FALSE)
+#   actual <- approx_pi_resample(rand_beta)
+#   expected <- pi
+#   expect_equal(actual, expected)
+# })

@@ -6,7 +6,7 @@
 
 This repository is a "Sammelsurium", i.e. a wild mix of various, of rather inefficient and poorly designed R functions from a bygone era. Created by merging several smaller repositories, it is now used to experiment with agents and other tools that may not offer the best data privacy practices.
 
-**Disclaimer:** Many of these functions are not optimized for performance. They often serve as less efficient, plain R implementations of functions that are already available in other packages or even in base R. They were mostly written for fun in order to explore mathematical concepts.
+**Disclaimer:** Many of these functions are not optimized for performance. They often serve as less efficient, plain R implementations of functions that are already available in other packages or even in base R. They were mostly written for fun, as a way of exploring mathematical concepts.
 
 ---
 

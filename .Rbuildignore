@@ -1,2 +1,5 @@
-^randor\.Rproj$
+^\.github$
+^.*\.Rproj$
 ^\.Rproj\.user$
+^[.]?air[.]toml$
+^\.vscode$
