@@ -6,18 +6,24 @@
 
 # Main Functions ----------------------------------------------------------
 
-#' Create a basis
-#' Create linear independent vectors aka a basis
-#' @param dim The dimension of the basis.
-#' @param negative A logical indicating whether to include negative values.
-#' @param upper The upper bound for the random numbers.
-#' @param returnMat A logical indicating whether to return a matrix or a list of vectors.
+#' Create a Basis of Linearly Independent Vectors
 #'
-#' @return A basis, either as a matrix or a list of vectors.
+#' This function generates a set of linearly independent vectors that form a basis for a vector space of a given dimension.
+#'
+#' @param dim An integer specifying the dimension of the basis.
+#' @param negative A logical value indicating whether to include negative values in the random numbers used to generate the basis vectors. Defaults to `TRUE`.
+#' @param upper An integer specifying the upper bound for the random numbers. Defaults to `9`.
+#' @param returnMat A logical value indicating whether to return the basis as a matrix or a list of vectors. Defaults to `FALSE`.
+#'
+#' @return If `returnMat` is `TRUE`, a matrix where each column is a basis vector. If `FALSE`, a list of numeric vectors, where each vector is a basis vector.
 #' @export
 #'
 #' @examples
+#' # Create a 3-dimensional basis and return it as a list of vectors
 #' create_basis(3)
+#'
+#' # Create a 2-dimensional basis with only positive values and return it as a matrix
+#' create_basis(2, negative = FALSE, returnMat = TRUE)
 create_basis <- function(dim, negative = TRUE, upper = 9, returnMat = FALSE) {
   if (negative) {
     lower <- -upper
@@ -43,16 +49,23 @@ create_basis <- function(dim, negative = TRUE, upper = 9, returnMat = FALSE) {
   return(out)
 }
 
-#' Check if a matrix is positive definite
+#' Check if a Matrix is Positive Definite
+#'
+#' This function checks if a given square matrix is positive definite. A matrix is positive definite if it is symmetric and all its eigenvalues are positive.
 #'
 #' @param A A numeric matrix.
 #'
-#' @return A logical indicating whether the matrix is positive definite.
+#' @return A logical value indicating whether the matrix is positive definite (`TRUE`) or not (`FALSE`).
 #' @export
 #'
 #' @examples
+#' # A positive definite matrix
 #' A <- matrix(c(2, -1, -1, 2), nrow = 2)
 #' is_pos_def(A)
+#'
+#' # A non-positive definite matrix
+#' B <- matrix(c(1, 2, 2, 1), nrow = 2)
+#' is_pos_def(B)
 is_pos_def <- function(A) { # test 1 - symmetry
 
   # test 1 - is symmetric?
@@ -88,17 +101,22 @@ is_pos_def <- function(A) { # test 1 - symmetry
   return(all(test1, test2, test3))
 }
 
-#' Create canonical form (A = UDU^-1)
+#' Create Canonical Form (Diagonalization) of a Matrix
+#'
+#' This function computes the canonical form (or diagonalization) of a square matrix `A`. The canonical form is represented by the equation `A = UDU^-1`, where `U` is the matrix of eigenvectors, `D` is the diagonal matrix of eigenvalues, and `U_inv` is the inverse of `U`.
 #'
 #' @param A A numeric matrix.
 #'
-#' @return A list with the matrices U, D, and U_inv, representing the canonical form of A.
+#' @return A list containing the matrices `U`, `D`, and `U_inv`.
 #' @export
 #'
 #' @examples
 #' A <- matrix(c(2, -1, -1, 2), nrow = 2)
 #' canonical_form(A)
 canonical_form <- function(A) {
+  if (is_defective(A)) {
+    stop("Matrix is defective and cannot be diagonalized.")
+  }
   # create UDU
 
   # create U
@@ -117,14 +135,37 @@ canonical_form <- function(A) {
   return(res)
 }
 
-# TODO: CHECK IF A IS DEFECTIVE, AS OTHERWISE U-1 DOES NOT EXIST!!
-
-#' Fast exponentiation using canonical form
+#' Check if a Matrix is Defective
+#'
+#' This function checks if a given square matrix is defective. A matrix is defective if the geometric multiplicity of any of its eigenvalues is less than the algebraic multiplicity.
 #'
 #' @param A A numeric matrix.
-#' @param p The power to raise the matrix to.
 #'
-#' @return The matrix A raised to the power of p.
+#' @return A logical value indicating whether the matrix is defective (`TRUE`) or not (`FALSE`).
+#' @export
+#'
+#' @examples
+#' # A defective matrix
+#' A <- matrix(c(1, 1, 0, 1), nrow = 2)
+#' is_defective(A)
+#'
+#' # A non-defective matrix
+#' B <- matrix(c(1, 0, 0, 2), nrow = 2)
+#' is_defective(B)
+is_defective <- function(A) {
+  e <- eigen(A)
+  # Check if the number of linearly independent eigenvectors is less than n
+  return(qr(e$vectors)$rank < nrow(A))
+}
+
+#' Fast Matrix Exponentiation using Canonical Form
+#'
+#' This function calculates the power of a square matrix using its canonical form (diagonalization). This method is generally more efficient for large powers than repeated matrix multiplication.
+#'
+#' @param A A numeric matrix.
+#' @param p An integer specifying the power to raise the matrix to.
+#'
+#' @return The matrix `A` raised to the power of `p`.
 #' @export
 #'
 #' @examples
@@ -146,12 +187,14 @@ fast_exp <- function(A, p) {
   return(UDU_inv)
 }
 
-#' Calculate matrix powers
+#' Calculate Matrix Powers
+#'
+#' This function calculates the power of a square matrix by repeated matrix multiplication.
 #'
 #' @param A A numeric matrix.
-#' @param n The power to raise the matrix to.
+#' @param n An integer specifying the power to raise the matrix to.
 #'
-#' @return The matrix A raised to the power of n.
+#' @return The matrix `A` raised to the power of `n`.
 #' @export
 #'
 #' @examples
@@ -180,13 +223,15 @@ mat_pow <- function(A, n) {
 
 #  ---------------------------------------
 
-#' Cauchy-Schwarz inequality test for linear dependence
-#' Single Cauchy-Schwarz inequality test. Check two vectors.
+#' Cauchy-Schwarz Inequality Test for Linear Dependence
+#'
+#' This function uses the Cauchy-Schwarz inequality to test if two vectors are linearly dependent.
+#'
 #' @param u A numeric vector.
 #' @param v A numeric vector.
-#' @param tol The tolerance for the comparison.
+#' @param tol A numeric value specifying the tolerance for the comparison. Defaults to `1e-05`.
 #'
-#' @return A logical indicating whether the vectors are linearly dependent.
+#' @return A logical value indicating whether the vectors are linearly dependent (`TRUE`) or not (`FALSE`).
 #' @export
 #'
 #' @examples
@@ -213,12 +258,13 @@ lin_dep_Cautchy_Schwartz <- function(u, v, tol = 1e-05) {
   }
 }
 
-#' Cauchy-Schwarz inequality test for linear dependence in a matrix
-#' Cauchy-Schwarz-Inequality to identify parallel cols/rows. Check for more than
-#' two vecs
+#' Cauchy-Schwarz Inequality Test for Linear Dependence in a Matrix
+#'
+#' This function uses the Cauchy-Schwarz inequality to identify linearly dependent rows or columns in a matrix.
+#'
 #' @param A A numeric matrix.
 #'
-#' @return A data frame with the indices of the linearly dependent rows/cols, or NULL if none are found.
+#' @return A data frame with the indices of the linearly dependent rows or columns, or `NULL` if none are found.
 #' @export
 #'
 #' @examples
@@ -277,8 +323,10 @@ lin_dep_Cautchy_Schwartz_matrix <- function(A) {
   }
 }
 
-#' Create an adjugate matrix
-#' Create an adjugate matrix (transpose of a cofactor matrix)
+#' Create an Adjugate Matrix
+#'
+#' This function calculates the adjugate matrix of a square matrix. The adjugate matrix is the transpose of the cofactor matrix.
+#'
 #' @param A A numeric matrix.
 #'
 #' @return The adjugate of the matrix.
@@ -322,8 +370,10 @@ adjugate <- function(A) {
 # identified by the Cautchy-Schwartz Inequality (e.g. [2,4] = 2*[1,2]), but not
 # if lin. dep. arise from combinations of vectors (e.g. [4,0] = [2,-2] + [2,2]).
 
-#' Create a generalized inverse of a matrix
-#' Create generalized inverse from a mxn matrix
+#' Create a Generalized Inverse of a Matrix
+#'
+#' This function calculates the generalized inverse (or Moore-Penrose inverse) of a matrix.
+#'
 #' @param A A numeric matrix.
 #'
 #' @return The generalized inverse of the matrix.
@@ -410,14 +460,16 @@ generalized_inverse <- function(A) {
   return(G)
 }
 
-#' Check Penrose conditions of a generalized inverse
+#' Check Penrose Conditions of a Generalized Inverse
+#'
+#' This function checks if a given matrix `G` is a generalized inverse of a matrix `A` by verifying the Penrose conditions.
 #'
 #' @param A A numeric matrix.
-#' @param G The generalized inverse of A.
-#' @param all_Penrose_check A logical indicating whether to check all four Penrose conditions.
-#' @param digits The number of digits to round to.
+#' @param G The generalized inverse of `A`.
+#' @param all_Penrose_check A logical value indicating whether to check all four Penrose conditions. If `FALSE` (the default), only the first condition (`AGA = A`) is checked.
+#' @param digits An integer specifying the number of digits to round to when comparing the matrices. Defaults to `2`.
 #'
-#' @return A logical indicating whether the Penrose conditions are met.
+#' @return A logical value indicating whether the Penrose conditions are met (`TRUE`) or not (`FALSE`).
 #' @export
 #'
 #' @examples
@@ -451,7 +503,9 @@ check_Penrose_cond <- function(A,
   }
 }
 
-#' Inverse of a square matrix
+#' Inverse of a Square Matrix
+#'
+#' This function calculates the inverse of a square matrix.
 #'
 #' @param A A square numeric matrix.
 #'
@@ -480,8 +534,10 @@ inverse <- function(A) {
   return(adjA * det(A)^-1)
 }
 
-#' Orthogonalize a matrix
-#' Orthogonalize matrix (AAT or ATA)
+#' Orthogonalize a Matrix
+#'
+#' This function orthogonalizes a matrix by computing the eigenvectors of `A %*% t(A)` or `t(A) %*% A`.
+#'
 #' @param A A numeric matrix.
 #'
 #' @return An orthogonalized matrix.
@@ -502,10 +558,12 @@ orthogonalize <- function(A) {
 
 # Rank --------------------------------------------------------------------
 
-#' Find the rank of a square matrix
+#' Find the Rank of a Square Matrix
+#'
+#' This function calculates the rank of a square matrix by counting the number of non-zero eigenvalues.
 #'
 #' @param A A square numeric matrix.
-#' @param tol The tolerance for the eigenvalues.
+#' @param tol A numeric value specifying the tolerance for determining if an eigenvalue is non-zero. Defaults to `1e-12`.
 #'
 #' @return The rank of the matrix.
 #' @export
@@ -518,7 +576,9 @@ rank_square_matrix <- function(A, tol = 1e-12) {
   return(rank_sq)
 }
 
-#' Find the rank of a matrix
+#' Find the Rank of a Matrix
+#'
+#' This function calculates the rank of a matrix by converting it to row echelon form and counting the number of non-zero rows.
 #'
 #' @param A A numeric matrix.
 #'
@@ -539,11 +599,13 @@ rank_matrix <- function(A) {
   }
 }
 
-#' Singular value decomposition
+#' Singular Value Decomposition
+#'
+#' This function performs a singular value decomposition of a matrix `A`.
 #'
 #' @param A A numeric matrix.
 #'
-#' @return A list with the matrices P, D, and Q, representing the singular value decomposition of A.
+#' @return A list with the matrices `P`, `D`, and `Q`, representing the singular value decomposition of `A`.
 #' @export
 #'
 #' @examples
@@ -578,7 +640,9 @@ singular_value_decomposition <- function(A) {
   return(res)
 }
 
-#' Get row echelon form of a matrix
+#' Get Row Echelon Form of a Matrix
+#'
+#' This function converts a matrix to its row echelon form using Gaussian elimination.
 #'
 #' @param A A numeric matrix.
 #'
@@ -672,7 +736,9 @@ ref <- function(A) {
   return(A)
 }
 
-#' Get reduced row echelon form of a matrix
+#' Get Reduced Row Echelon Form of a Matrix
+#'
+#' This function converts a matrix to its reduced row echelon form using Gaussian elimination.
 #'
 #' @param A A numeric matrix.
 #'
@@ -793,13 +859,15 @@ rref <- function(A) {
 
 # Plotting Functions ------------------------------------------------------
 
-#' Plot eigenvectors of a 2x2 matrix
+#' Plot Eigenvectors of a 2x2 Matrix
+#'
+#' This function visualizes the eigenvectors of a 2x2 matrix, showing the transformation of the basis vectors and the span of the eigenvectors.
 #'
 #' @param A A 2x2 numeric matrix.
-#' @param offset The offset for the plot limits.
-#' @param plotBasisVecs A logical indicating whether to plot the basis vectors.
-#' @param plotSpan A logical indicating whether to plot the span of the vectors.
-#' @param plotTransBasis A logical indicating whether to plot the transformed basis vectors.
+#' @param offset A numeric value specifying the offset for the plot limits. Defaults to `1`.
+#' @param plotBasisVecs A logical value indicating whether to plot the basis vectors. Defaults to `TRUE`.
+#' @param plotSpan A logical value indicating whether to plot the span of the vectors. Defaults to `TRUE`.
+#' @param plotTransBasis A logical value indicating whether to plot the transformed basis vectors. Defaults to `TRUE`.
 #'
 #' @return A plot of the eigenvectors.
 #' @export
@@ -905,13 +973,15 @@ plot_eigenvec <- function(A,
   par(mfrow = c(1, 1))
 }
 
-#' Plot matrix transformation Ax = y
+#' Plot Matrix Transformation
+#'
+#' This function visualizes the transformation of a vector `v` by a 2x2 matrix `A`.
 #'
 #' @param A A 2x2 numeric matrix.
 #' @param v A numeric vector.
-#' @param offset The offset for the plot limits.
-#' @param plotBasisVecs A logical indicating whether to plot the basis vectors.
-#' @param splitPlot A logical indicating whether to split the plot into two.
+#' @param offset A numeric value specifying the offset for the plot limits. Defaults to `1`.
+#' @param plotBasisVecs A logical value indicating whether to plot the basis vectors. Defaults to `TRUE`.
+#' @param splitPlot A logical value indicating whether to create a split plot showing the transformation before and after. Defaults to `TRUE`.
 #'
 #' @return A plot of the matrix transformation.
 #' @export
