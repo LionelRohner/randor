@@ -231,15 +231,13 @@ testthat::test_that("is_divisible_by_digit is not implemented", {
   skip("is_divisible_by_digit is not implemented yet.")
 })
 
-context("plot")
-
-test_that("plot_all_digits runs without error", {
+testthat::test_that("plot_all_digits runs without error", {
   vec <- c(1, 22, 333)
   # This will fail if the function throws an error
   expect_silent(plot_all_digits(vec))
 })
 
-test_that("plot_last_digits runs without error", {
+testthat::test_that("plot_last_digits runs without error", {
   vec <- c(1, 22, 333)
   # This will fail if the function throws an error
   expect_silent(plot_last_digits(vec))
