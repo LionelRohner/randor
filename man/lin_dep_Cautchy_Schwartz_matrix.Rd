@@ -2,9 +2,7 @@
 % Please edit documentation in R/lafnaf.R
 \name{lin_dep_Cautchy_Schwartz_matrix}
 \alias{lin_dep_Cautchy_Schwartz_matrix}
-\title{Cauchy-Schwarz inequality test for linear dependence in a matrix
-Cauchy-Schwarz-Inequality to identify parallel cols/rows. Check for more than
-two vecs}
+\title{Cauchy-Schwarz Inequality Test for Linear Dependence in a Matrix}
 \usage{
 lin_dep_Cautchy_Schwartz_matrix(A)
 }
@@ -12,12 +10,10 @@ lin_dep_Cautchy_Schwartz_matrix(A)
 \item{A}{A numeric matrix.}
 }
 \value{
-A data frame with the indices of the linearly dependent rows/cols, or NULL if none are found.
+A data frame with the indices of the linearly dependent rows or columns, or \code{NULL} if none are found.
 }
 \description{
-Cauchy-Schwarz inequality test for linear dependence in a matrix
-Cauchy-Schwarz-Inequality to identify parallel cols/rows. Check for more than
-two vecs
+This function uses the Cauchy-Schwarz inequality to identify linearly dependent rows or columns in a matrix.
 }
 \examples{
 A <- matrix(c(1, 2, 2, 4), nrow = 2, byrow = TRUE)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/lafnaf.R
 \name{singular_value_decomposition}
 \alias{singular_value_decomposition}
-\title{Singular value decomposition}
+\title{Singular Value Decomposition}
 \usage{
 singular_value_decomposition(A)
 }
@@ -10,10 +10,10 @@ singular_value_decomposition(A)
 \item{A}{A numeric matrix.}
 }
 \value{
-A list with the matrices P, D, and Q, representing the singular value decomposition of A.
+A list with the matrices \code{P}, \code{D}, and \code{Q}, representing the singular value decomposition of \code{A}.
 }
 \description{
-Singular value decomposition
+This function performs a singular value decomposition of a matrix \code{A}.
 }
 \examples{
 A <- matrix(c(1, 2, 2, 4), nrow = 2, byrow = TRUE)

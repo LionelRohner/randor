@@ -2,7 +2,7 @@
 % Please edit documentation in R/lafnaf.R
 \name{canonical_form}
 \alias{canonical_form}
-\title{Create canonical form (A = UDU^-1)}
+\title{Create Canonical Form (Diagonalization) of a Matrix}
 \usage{
 canonical_form(A)
 }
@@ -10,10 +10,10 @@ canonical_form(A)
 \item{A}{A numeric matrix.}
 }
 \value{
-A list with the matrices U, D, and U_inv, representing the canonical form of A.
+A list containing the matrices \code{U}, \code{D}, and \code{U_inv}.
 }
 \description{
-Create canonical form (A = UDU^-1)
+This function computes the canonical form (or diagonalization) of a square matrix \code{A}. The canonical form is represented by the equation \code{A = UDU^-1}, where \code{U} is the matrix of eigenvectors, \code{D} is the diagonal matrix of eigenvalues, and \code{U_inv} is the inverse of \code{U}.
 }
 \examples{
 A <- matrix(c(2, -1, -1, 2), nrow = 2)

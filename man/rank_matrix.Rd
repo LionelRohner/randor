@@ -2,7 +2,7 @@
 % Please edit documentation in R/lafnaf.R
 \name{rank_matrix}
 \alias{rank_matrix}
-\title{Find the rank of a matrix}
+\title{Find the Rank of a Matrix}
 \usage{
 rank_matrix(A)
 }
@@ -13,7 +13,7 @@ rank_matrix(A)
 The rank of the matrix.
 }
 \description{
-Find the rank of a matrix
+This function calculates the rank of a matrix by converting it to row echelon form and counting the number of non-zero rows.
 }
 \examples{
 A <- matrix(c(1, 2, 2, 4), nrow = 2, byrow = TRUE)
