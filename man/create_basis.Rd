@@ -2,27 +2,29 @@
 % Please edit documentation in R/lafnaf.R
 \name{create_basis}
 \alias{create_basis}
-\title{Create a basis
-Create linear independent vectors aka a basis}
+\title{Create a Basis of Linearly Independent Vectors}
 \usage{
 create_basis(dim, negative = TRUE, upper = 9, returnMat = FALSE)
 }
 \arguments{
-\item{dim}{The dimension of the basis.}
+\item{dim}{An integer specifying the dimension of the basis.}
 
-\item{negative}{A logical indicating whether to include negative values.}
+\item{negative}{A logical value indicating whether to include negative values in the random numbers used to generate the basis vectors. Defaults to \code{TRUE}.}
 
-\item{upper}{The upper bound for the random numbers.}
+\item{upper}{An integer specifying the upper bound for the random numbers. Defaults to \code{9}.}
 
-\item{returnMat}{A logical indicating whether to return a matrix or a list of vectors.}
+\item{returnMat}{A logical value indicating whether to return the basis as a matrix or a list of vectors. Defaults to \code{FALSE}.}
 }
 \value{
-A basis, either as a matrix or a list of vectors.
+If \code{returnMat} is \code{TRUE}, a matrix where each column is a basis vector. If \code{FALSE}, a list of numeric vectors, where each vector is a basis vector.
 }
 \description{
-Create a basis
-Create linear independent vectors aka a basis
+This function generates a set of linearly independent vectors that form a basis for a vector space of a given dimension.
 }
 \examples{
+# Create a 3-dimensional basis and return it as a list of vectors
 create_basis(3)
+
+# Create a 2-dimensional basis with only positive values and return it as a matrix
+create_basis(2, negative = FALSE, returnMat = TRUE)
 }

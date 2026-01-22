@@ -2,8 +2,7 @@
 % Please edit documentation in R/lafnaf.R
 \name{generalized_inverse}
 \alias{generalized_inverse}
-\title{Create a generalized inverse of a matrix
-Create generalized inverse from a mxn matrix}
+\title{Create a Generalized Inverse of a Matrix}
 \usage{
 generalized_inverse(A)
 }
@@ -14,8 +13,7 @@ generalized_inverse(A)
 The generalized inverse of the matrix.
 }
 \description{
-Create a generalized inverse of a matrix
-Create generalized inverse from a mxn matrix
+This function calculates the generalized inverse (or Moore-Penrose inverse) of a matrix.
 }
 \examples{
 A <- matrix(c(1, 2, 2, 4), nrow = 2, byrow = TRUE)

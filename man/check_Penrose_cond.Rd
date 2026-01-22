@@ -2,24 +2,24 @@
 % Please edit documentation in R/lafnaf.R
 \name{check_Penrose_cond}
 \alias{check_Penrose_cond}
-\title{Check Penrose conditions of a generalized inverse}
+\title{Check Penrose Conditions of a Generalized Inverse}
 \usage{
 check_Penrose_cond(A, G, all_Penrose_check = FALSE, digits = 2)
 }
 \arguments{
 \item{A}{A numeric matrix.}
 
-\item{G}{The generalized inverse of A.}
+\item{G}{The generalized inverse of \code{A}.}
 
-\item{all_Penrose_check}{A logical indicating whether to check all four Penrose conditions.}
+\item{all_Penrose_check}{A logical value indicating whether to check all four Penrose conditions. If \code{FALSE} (the default), only the first condition (\code{AGA = A}) is checked.}
 
-\item{digits}{The number of digits to round to.}
+\item{digits}{An integer specifying the number of digits to round to when comparing the matrices. Defaults to \code{2}.}
 }
 \value{
-A logical indicating whether the Penrose conditions are met.
+A logical value indicating whether the Penrose conditions are met (\code{TRUE}) or not (\code{FALSE}).
 }
 \description{
-Check Penrose conditions of a generalized inverse
+This function checks if a given matrix \code{G} is a generalized inverse of a matrix \code{A} by verifying the Penrose conditions.
 }
 \examples{
 A <- matrix(c(1, 2, 2, 4), nrow = 2, byrow = TRUE)

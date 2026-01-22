@@ -2,7 +2,7 @@
 % Please edit documentation in R/lafnaf.R
 \name{rref}
 \alias{rref}
-\title{Get reduced row echelon form of a matrix}
+\title{Get Reduced Row Echelon Form of a Matrix}
 \usage{
 rref(A)
 }
@@ -13,7 +13,7 @@ rref(A)
 The reduced row echelon form of the matrix.
 }
 \description{
-Get reduced row echelon form of a matrix
+This function converts a matrix to its reduced row echelon form using Gaussian elimination.
 }
 \examples{
 A <- matrix(c(1, 2, 2, 4), nrow = 2, byrow = TRUE)

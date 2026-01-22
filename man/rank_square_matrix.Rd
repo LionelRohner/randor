@@ -2,20 +2,20 @@
 % Please edit documentation in R/lafnaf.R
 \name{rank_square_matrix}
 \alias{rank_square_matrix}
-\title{Find the rank of a square matrix}
+\title{Find the Rank of a Square Matrix}
 \usage{
 rank_square_matrix(A, tol = 1e-12)
 }
 \arguments{
 \item{A}{A square numeric matrix.}
 
-\item{tol}{The tolerance for the eigenvalues.}
+\item{tol}{A numeric value specifying the tolerance for determining if an eigenvalue is non-zero. Defaults to \code{1e-12}.}
 }
 \value{
 The rank of the matrix.
 }
 \description{
-Find the rank of a square matrix
+This function calculates the rank of a square matrix by counting the number of non-zero eigenvalues.
 }
 \examples{
 A <- matrix(c(1, 2, 2, 4), nrow = 2, byrow = TRUE)

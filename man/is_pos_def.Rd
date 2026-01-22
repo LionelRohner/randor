@@ -2,7 +2,7 @@
 % Please edit documentation in R/lafnaf.R
 \name{is_pos_def}
 \alias{is_pos_def}
-\title{Check if a matrix is positive definite}
+\title{Check if a Matrix is Positive Definite}
 \usage{
 is_pos_def(A)
 }
@@ -10,12 +10,17 @@ is_pos_def(A)
 \item{A}{A numeric matrix.}
 }
 \value{
-A logical indicating whether the matrix is positive definite.
+A logical value indicating whether the matrix is positive definite (\code{TRUE}) or not (\code{FALSE}).
 }
 \description{
-Check if a matrix is positive definite
+This function checks if a given square matrix is positive definite. A matrix is positive definite if it is symmetric and all its eigenvalues are positive.
 }
 \examples{
+# A positive definite matrix
 A <- matrix(c(2, -1, -1, 2), nrow = 2)
 is_pos_def(A)
+
+# A non-positive definite matrix
+B <- matrix(c(1, 2, 2, 1), nrow = 2)
+is_pos_def(B)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/lafnaf.R
 \name{plot_matrix_transformation}
 \alias{plot_matrix_transformation}
-\title{Plot matrix transformation Ax = y}
+\title{Plot Matrix Transformation}
 \usage{
 plot_matrix_transformation(
   A,
@@ -17,17 +17,17 @@ plot_matrix_transformation(
 
 \item{v}{A numeric vector.}
 
-\item{offset}{The offset for the plot limits.}
+\item{offset}{A numeric value specifying the offset for the plot limits. Defaults to \code{1}.}
 
-\item{plotBasisVecs}{A logical indicating whether to plot the basis vectors.}
+\item{plotBasisVecs}{A logical value indicating whether to plot the basis vectors. Defaults to \code{TRUE}.}
 
-\item{splitPlot}{A logical indicating whether to split the plot into two.}
+\item{splitPlot}{A logical value indicating whether to create a split plot showing the transformation before and after. Defaults to \code{TRUE}.}
 }
 \value{
 A plot of the matrix transformation.
 }
 \description{
-Plot matrix transformation Ax = y
+This function visualizes the transformation of a vector \code{v} by a 2x2 matrix \code{A}.
 }
 \examples{
 A <- matrix(c(2, -1, -1, 2), nrow = 2)
