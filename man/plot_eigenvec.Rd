@@ -2,7 +2,7 @@
 % Please edit documentation in R/lafnaf.R
 \name{plot_eigenvec}
 \alias{plot_eigenvec}
-\title{Plot eigenvectors of a 2x2 matrix}
+\title{Plot Eigenvectors of a 2x2 Matrix}
 \usage{
 plot_eigenvec(
   A,
@@ -15,19 +15,19 @@ plot_eigenvec(
 \arguments{
 \item{A}{A 2x2 numeric matrix.}
 
-\item{offset}{The offset for the plot limits.}
+\item{offset}{A numeric value specifying the offset for the plot limits. Defaults to \code{1}.}
 
-\item{plotBasisVecs}{A logical indicating whether to plot the basis vectors.}
+\item{plotBasisVecs}{A logical value indicating whether to plot the basis vectors. Defaults to \code{TRUE}.}
 
-\item{plotSpan}{A logical indicating whether to plot the span of the vectors.}
+\item{plotSpan}{A logical value indicating whether to plot the span of the vectors. Defaults to \code{TRUE}.}
 
-\item{plotTransBasis}{A logical indicating whether to plot the transformed basis vectors.}
+\item{plotTransBasis}{A logical value indicating whether to plot the transformed basis vectors. Defaults to \code{TRUE}.}
 }
 \value{
 A plot of the eigenvectors.
 }
 \description{
-Plot eigenvectors of a 2x2 matrix
+This function visualizes the eigenvectors of a 2x2 matrix, showing the transformation of the basis vectors and the span of the eigenvectors.
 }
 \examples{
 A <- matrix(c(2, -1, -1, 2), nrow = 2)

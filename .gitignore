@@ -24,7 +24,5 @@
 # R Environment Variables
 .Renviron
 
-# Data and other unwanted files
+# R Plots
 Rplots.pdf
-*.xlsx
-*.csv

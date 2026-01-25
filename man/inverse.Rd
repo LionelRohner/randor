@@ -2,7 +2,7 @@
 % Please edit documentation in R/lafnaf.R
 \name{inverse}
 \alias{inverse}
-\title{Inverse of a square matrix}
+\title{Inverse of a Square Matrix}
 \usage{
 inverse(A)
 }
@@ -13,7 +13,7 @@ inverse(A)
 The inverse of the matrix.
 }
 \description{
-Inverse of a square matrix
+This function calculates the inverse of a square matrix.
 }
 \examples{
 A <- matrix(c(2, -1, -1, 2), nrow = 2)

@@ -2,8 +2,7 @@
 % Please edit documentation in R/lafnaf.R
 \name{orthogonalize}
 \alias{orthogonalize}
-\title{Orthogonalize a matrix
-Orthogonalize matrix (AAT or ATA)}
+\title{Orthogonalize a Matrix}
 \usage{
 orthogonalize(A)
 }
@@ -14,8 +13,7 @@ orthogonalize(A)
 An orthogonalized matrix.
 }
 \description{
-Orthogonalize a matrix
-Orthogonalize matrix (AAT or ATA)
+This function orthogonalizes a matrix by computing the eigenvectors of \code{A \%*\% t(A)} or \code{t(A) \%*\% A}.
 }
 \examples{
 A <- matrix(c(1, 2, 2, 4), nrow = 2, byrow = TRUE)

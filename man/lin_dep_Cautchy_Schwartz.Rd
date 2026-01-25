@@ -2,8 +2,7 @@
 % Please edit documentation in R/lafnaf.R
 \name{lin_dep_Cautchy_Schwartz}
 \alias{lin_dep_Cautchy_Schwartz}
-\title{Cauchy-Schwarz inequality test for linear dependence
-Single Cauchy-Schwarz inequality test. Check two vectors.}
+\title{Cauchy-Schwarz Inequality Test for Linear Dependence}
 \usage{
 lin_dep_Cautchy_Schwartz(u, v, tol = 1e-05)
 }
@@ -12,14 +11,13 @@ lin_dep_Cautchy_Schwartz(u, v, tol = 1e-05)
 
 \item{v}{A numeric vector.}
 
-\item{tol}{The tolerance for the comparison.}
+\item{tol}{A numeric value specifying the tolerance for the comparison. Defaults to \code{1e-05}.}
 }
 \value{
-A logical indicating whether the vectors are linearly dependent.
+A logical value indicating whether the vectors are linearly dependent (\code{TRUE}) or not (\code{FALSE}).
 }
 \description{
-Cauchy-Schwarz inequality test for linear dependence
-Single Cauchy-Schwarz inequality test. Check two vectors.
+This function uses the Cauchy-Schwarz inequality to test if two vectors are linearly dependent.
 }
 \examples{
 u <- c(1, 2)

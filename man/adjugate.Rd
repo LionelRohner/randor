@@ -2,8 +2,7 @@
 % Please edit documentation in R/lafnaf.R
 \name{adjugate}
 \alias{adjugate}
-\title{Create an adjugate matrix
-Create an adjugate matrix (transpose of a cofactor matrix)}
+\title{Create an Adjugate Matrix}
 \usage{
 adjugate(A)
 }
@@ -14,8 +13,7 @@ adjugate(A)
 The adjugate of the matrix.
 }
 \description{
-Create an adjugate matrix
-Create an adjugate matrix (transpose of a cofactor matrix)
+This function calculates the adjugate matrix of a square matrix. The adjugate matrix is the transpose of the cofactor matrix.
 }
 \examples{
 A <- matrix(c(2, -1, -1, 2), nrow = 2)

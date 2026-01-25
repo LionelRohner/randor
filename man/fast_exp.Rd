@@ -2,20 +2,20 @@
 % Please edit documentation in R/lafnaf.R
 \name{fast_exp}
 \alias{fast_exp}
-\title{Fast exponentiation using canonical form}
+\title{Fast Matrix Exponentiation using Canonical Form}
 \usage{
 fast_exp(A, p)
 }
 \arguments{
 \item{A}{A numeric matrix.}
 
-\item{p}{The power to raise the matrix to.}
+\item{p}{An integer specifying the power to raise the matrix to.}
 }
 \value{
-The matrix A raised to the power of p.
+The matrix \code{A} raised to the power of \code{p}.
 }
 \description{
-Fast exponentiation using canonical form
+This function calculates the power of a square matrix using its canonical form (diagonalization). This method is generally more efficient for large powers than repeated matrix multiplication.
 }
 \examples{
 A <- matrix(c(2, -1, -1, 2), nrow = 2)

@@ -2,20 +2,20 @@
 % Please edit documentation in R/lafnaf.R
 \name{mat_pow}
 \alias{mat_pow}
-\title{Calculate matrix powers}
+\title{Calculate Matrix Powers}
 \usage{
 mat_pow(A, n)
 }
 \arguments{
 \item{A}{A numeric matrix.}
 
-\item{n}{The power to raise the matrix to.}
+\item{n}{An integer specifying the power to raise the matrix to.}
 }
 \value{
-The matrix A raised to the power of n.
+The matrix \code{A} raised to the power of \code{n}.
 }
 \description{
-Calculate matrix powers
+This function calculates the power of a square matrix by repeated matrix multiplication.
 }
 \examples{
 A <- matrix(c(2, -1, -1, 2), nrow = 2)
