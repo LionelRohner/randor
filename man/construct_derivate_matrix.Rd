@@ -2,13 +2,19 @@
 % Please edit documentation in R/matrix_derivatives.R
 \name{construct_derivate_matrix}
 \alias{construct_derivate_matrix}
-\title{Title}
+\title{Construct a derivative matrix}
 \usage{
 construct_derivate_matrix(order)
 }
 \arguments{
-\item{order}{}
+\item{order}{The order of the polynomial.}
+}
+\value{
+A derivative matrix.
 }
 \description{
-Title
+Construct a derivative matrix
+}
+\examples{
+construct_derivate_matrix(4)
 }

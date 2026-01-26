@@ -2,14 +2,15 @@
 # Construct derivative matrix ---------------------------------------------
 
 
-#' Title
+#' Construct a derivative matrix
 #'
-#' @param order
+#' @param order The order of the polynomial.
 #'
-#' @returns
+#' @returns A derivative matrix.
 #' @export
 #'
 #' @examples
+#' construct_derivate_matrix(4)
 construct_derivate_matrix <- function(order) {
   # construct entries of A
   x <- rep(1:order, order)
@@ -31,15 +32,16 @@ construct_derivate_matrix <- function(order) {
 
 # Process polynomial ------------------------------------------------------
 
-#' Title
+#' Prepare a polynomial for matrix operations
 #'
-#' @param polynomial
-#' @param order
+#' @param polynomial A character string representing the polynomial.
+#' @param order The order of the polynomial.
 #'
-#' @returns
+#' @returns A numeric vector representing the polynomial.
 #' @export
 #'
 #' @examples
+#' prep_polynomial("1+x+x^2+x^3+x^4", 4)
 prep_polynomial <- function(polynomial, order) {
   # string processing:
   # replace + by comma
@@ -75,19 +77,19 @@ prep_polynomial <- function(polynomial, order) {
 
 # Differentiate the polynomial using linear algebra -----------------------
 
-#' Title
+#' Differentiate a polynomial using a derivative matrix
 #'
-#' @param polyVec
-#' @param d_dx
-#' @param order
+#' @param polyVec A numeric vector representing the polynomial.
+#' @param d_dx The derivative matrix.
+#' @param order The order of the polynomial.
 #'
-#' @returns
+#' @returns A character string representing the derivative of the polynomial.
 #' @export
 #'
 #' @examples
-#' differentiate_polynomial("1+x+x^2+x^3+x^4", order = 4)
-#' differentiate_polynomial("1+x^9+3x^3+5x^6", order = 9)
-#' differentiate_polynomial("0+x+x^2", order = 2)
+#' d_dx <- construct_derivate_matrix(4)
+#' polyVec <- prep_polynomial("1+x+x^2+x^3+x^4", 4)
+#' matrix_derivative(polyVec, d_dx, 4)
 matrix_derivative <- function(polyVec, d_dx, order) {
   # calculate derivative using d_dx matrix
   derivative <- d_dx %*% polyVec
@@ -121,15 +123,16 @@ matrix_derivative <- function(polyVec, d_dx, order) {
 }
 
 
-#' Title
+#' Differentiate a polynomial
 #'
-#' @param polynomial
-#' @param order
+#' @param polynomial A character string representing the polynomial.
+#' @param order The order of the polynomial.
 #'
-#' @returns
+#' @returns A character string representing the derivative of the polynomial.
 #' @export
 #'
 #' @examples
+#' differentiate_polynomial("1+x+x^2+x^3+x^4", order = 4)
 differentiate_polynomial <- function(polynomial, order) {
   # Construct derivative matrix
   d_dx <- construct_derivate_matrix(order = order)

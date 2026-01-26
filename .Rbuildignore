@@ -5,3 +5,10 @@
 ^\\.Ruserdata$
 ^\\.lintr$
 ^LICENSE\\.md$
+^\\.github$
+^\\.vscode$
+^Rplots\\.pdf$
+..Rcheck
+.git
+.gitignore
+randor.Rproj

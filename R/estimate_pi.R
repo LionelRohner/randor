@@ -1,3 +1,8 @@
+#' @importFrom stats sd pbeta runif dbeta rbeta rgamma
+#' @importFrom graphics hist
+#' @importFrom grDevices rgb
+NULL
+
 # Empirical Methods -------------------------------------------------------
 
 

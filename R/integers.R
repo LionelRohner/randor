@@ -1,3 +1,6 @@
+#' @importFrom ggplot2 ggplot aes geom_bar labs theme_minimal
+utils::globalVariables(c("digits", "n"))
+
 # Helpers / Aux -----------------------------------------------------------
 
 #' Get number of digits of a number
