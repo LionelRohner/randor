@@ -20,5 +20,5 @@ The age in years.
 Calculate age
 }
 \examples{
-calc_age(birth_date = "1989-01-24", target_date = "2009-01-21")
+calc_age(birth_date = "1987-02-24", target_date = "2009-01-21")
 }

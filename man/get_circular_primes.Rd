@@ -18,6 +18,6 @@ Get circular primes
 E.g. 113, 131, and 311, i.e. circular permutatios that are also primes
 }
 \examples{
-primes_to_100 <- sieve_ov_Erathostenes(100)
+primes_to_100 <- eratosthenes_sieve(100)
 get_circular_primes(primes_to_100)
 }

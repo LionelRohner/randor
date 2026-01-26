@@ -1,3 +1,7 @@
+#' @importFrom graphics par grid arrows points legend text abline
+#' @importFrom grDevices rgb
+NULL
+
 # Linear Algebra Functions Nobody Asked For -------------------------------
 
 

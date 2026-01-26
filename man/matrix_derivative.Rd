@@ -2,18 +2,25 @@
 % Please edit documentation in R/matrix_derivatives.R
 \name{matrix_derivative}
 \alias{matrix_derivative}
-\title{Title}
+\title{Differentiate a polynomial using a derivative matrix}
 \usage{
 matrix_derivative(polyVec, d_dx, order)
 }
 \arguments{
-\item{order}{}
+\item{polyVec}{A numeric vector representing the polynomial.}
+
+\item{d_dx}{The derivative matrix.}
+
+\item{order}{The order of the polynomial.}
+}
+\value{
+A character string representing the derivative of the polynomial.
 }
 \description{
-Title
+Differentiate a polynomial using a derivative matrix
 }
 \examples{
-differentiate_polynomial("1+x+x^2+x^3+x^4", order = 4)
-differentiate_polynomial("1+x^9+3x^3+5x^6", order = 9)
-differentiate_polynomial("0+x+x^2", order = 2)
+d_dx <- construct_derivate_matrix(4)
+polyVec <- prep_polynomial("1+x+x^2+x^3+x^4", 4)
+matrix_derivative(polyVec, d_dx, 4)
 }

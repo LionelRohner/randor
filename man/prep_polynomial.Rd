@@ -2,13 +2,21 @@
 % Please edit documentation in R/matrix_derivatives.R
 \name{prep_polynomial}
 \alias{prep_polynomial}
-\title{Title}
+\title{Prepare a polynomial for matrix operations}
 \usage{
 prep_polynomial(polynomial, order)
 }
 \arguments{
-\item{order}{}
+\item{polynomial}{A character string representing the polynomial.}
+
+\item{order}{The order of the polynomial.}
+}
+\value{
+A numeric vector representing the polynomial.
 }
 \description{
-Title
+Prepare a polynomial for matrix operations
+}
+\examples{
+prep_polynomial("1+x+x^2+x^3+x^4", 4)
 }

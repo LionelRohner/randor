@@ -4,7 +4,7 @@ library(testthat)
 
 # Unit Tests --------------------------------------------------------------
 
-testthat::test_that("Test that sieve_ov_Erathostenes works as intended", {
+testthat::test_that("Test that eratosthenes_sieve works as intended", {
   # Dummy data
   x1 <- 10
   x2 <- 1e6
@@ -20,27 +20,27 @@ testthat::test_that("Test that sieve_ov_Erathostenes works as intended", {
   exp_x4 <- x4
 
   # Tests
-  actual_x1 <- sieve_ov_Erathostenes(to = x1)
+  actual_x1 <- eratosthenes_sieve(to = x1)
   expect_equal(actual_x1, exp_x1)
 
-  actual_x2_len <- sieve_ov_Erathostenes(to = x2) |> length()
+  actual_x2_len <- eratosthenes_sieve(to = x2) |> length()
   expect_equal(actual_x2_len, exp_x2_len)
 
-  actual_x3 <- sieve_ov_Erathostenes(to = x3)
+  actual_x3 <- eratosthenes_sieve(to = x3)
   expect_equal(actual_x3, exp_x3)
 
-  actual_x4 <- sieve_ov_Erathostenes(to = x4)
+  actual_x4 <- eratosthenes_sieve(to = x4)
   expect_equal(actual_x4, exp_x4)
 
-  expect_error(sieve_ov_Erathostenes(to = x5))
-  expect_error(sieve_ov_Erathostenes(to = x6))
+  expect_error(eratosthenes_sieve(to = x5))
+  expect_error(eratosthenes_sieve(to = x6))
 })
 
 testthat::test_that("Test that get_circular_primes works as intended", {
   # Dummy data
-  p1 <- sieve_ov_Erathostenes(to = 10)
-  p2 <- sieve_ov_Erathostenes(to = 1000)
-  p3 <- sieve_ov_Erathostenes(to = 1e6)
+  p1 <- eratosthenes_sieve(to = 10)
+  p2 <- eratosthenes_sieve(to = 1000)
+  p3 <- eratosthenes_sieve(to = 1e6)
   p4 <- 6
 
   # Expected results

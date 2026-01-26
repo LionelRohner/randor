@@ -2,13 +2,21 @@
 % Please edit documentation in R/matrix_derivatives.R
 \name{differentiate_polynomial}
 \alias{differentiate_polynomial}
-\title{Title}
+\title{Differentiate a polynomial}
 \usage{
 differentiate_polynomial(polynomial, order)
 }
 \arguments{
-\item{order}{}
+\item{polynomial}{A character string representing the polynomial.}
+
+\item{order}{The order of the polynomial.}
+}
+\value{
+A character string representing the derivative of the polynomial.
 }
 \description{
-Title
+Differentiate a polynomial
+}
+\examples{
+differentiate_polynomial("1+x+x^2+x^3+x^4", order = 4)
 }

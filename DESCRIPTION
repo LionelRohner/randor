@@ -1,8 +1,10 @@
 Package: randor
-Title: Random R functions for everyday use ( ͡° ͜ʖ ͡°)
-Version: 0.0.1.0000
+Title: Random R functions for everyday use
+Version: 0.0.2.0000
 Authors@R: 
     person("Lionel", "Rohner", , "lionel.rohner@gmail.com", role = c("aut", "cre"))
+Author: Lionel Rohner
+Maintainer: Lionel Rohner <lionel.rohner@gmail.com>
 Description: This repository is a "Sammelsurium" – a wild mix of various R functions. It was created by merging several smaller, older repositories.
 License: MIT + file LICENSE
 Encoding: UTF-8
