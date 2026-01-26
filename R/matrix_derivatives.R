@@ -42,36 +42,51 @@ construct_derivate_matrix <- function(order) {
 #' @examples
 #' prep_polynomial("1+x+x^2+x^3+x^4", 4)
 prep_polynomial <- function(polynomial, order) {
-  # string processing:
-  # replace + by comma
-  a <- gsub("\\+", ",", polynomial)
+  # Initialize coefficient vector of size order + 1
+  polyVec <- numeric(order + 1)
+  names(polyVec) <- 0:order
 
-  # add coefficients of 1 if missing
-  b <- gsub(",x", ",1x", a)
+  # Pre-process string:
+  # 1. remove all whitespace
+  polynomial <- gsub("\\s+", "", polynomial)
+  # 2. Replace '-' with '+-' for easier splitting
+  polynomial <- gsub("-", "+-", polynomial)
+  # 3. If it starts with "+-", the first term was negative. Remove leading "+".
+  if (startsWith(polynomial, "+-")) {
+    polynomial <- substring(polynomial, 2)
+  }
+  # 4. Add implicit 1 coefficients to 'x' terms, e.g. x -> 1x, +x -> +1x, -x -> -1x
+  polynomial <- gsub("(?<=[+-]|^)x", "1x", polynomial, perl = TRUE)
 
-  # add exponents of 1 if missing (used for indexing)
-  c <- gsub("x,", "x^1,", b)
+  # Split polynomial into terms
+  terms <- unlist(strsplit(polynomial, "\\+"))
+  terms <- terms[terms != ""] # Remove empty strings from splitting
 
-  # make it iterable
-  polynomialSplit <- unlist(strsplit(c, ","))
+  for (term in terms) {
+    # Case 1: Constant term (no 'x')
+    if (!grepl("x", term)) {
+      polyVec["0"] <- polyVec["0"] + as.numeric(term)
+      next
+    }
 
-  # loop through polynomial and generate the polynomial vector
-  polyVec <- vector(mode = "numeric", length = order)
+    # Case 2: Term with 'x'
+    # Default exponent is 1 if not specified
+    if (!grepl("\\^", term)) {
+      term <- paste0(term, "^1")
+    }
 
-  for (term in polynomialSplit) {
-    # if term has length 1 it is expected to be the constant part of the polynomial
-    if (nchar(term) == 1) {
-      polyVec[1] <- term
+    parts <- strsplit(term, "x\\^")[[1]]
+    coef <- as.numeric(parts[1])
+    exp <- as.numeric(parts[2])
+
+    if (exp > order) {
+      warning(paste("Term", term, "has exponent greater than order", order, "and will be ignored."))
     } else {
-      # split terms into index (exponent of the term, i.e. last char) and coef (first char)
-      index <- as.numeric(substring(term, nchar(term), nchar(term))) + 1
-      coef <- substring(term, 1, 1)
-      polyVec[index] <- coef
+      polyVec[as.character(exp)] <- polyVec[as.character(exp)] + coef
     }
   }
-  # transform to numeric for math operations
-  out <- as.numeric(polyVec)
-  return(out)
+
+  return(as.numeric(polyVec))
 }
 
 # Differentiate the polynomial using linear algebra -----------------------
@@ -98,26 +113,27 @@ matrix_derivative <- function(polyVec, d_dx, order) {
   result <- c()
 
   for (i in 1:order) {
+    newCoef <- derivative[i]
+    if (newCoef == 0) {
+      next
+    }
+
     # first term is just the constant part
     if (i == 1) {
-      newCoef <- derivative[i]
-      newTerm <- paste(i)
+      newTerm <- "x^0"
     } else {
       # terms with degree higher than 0 are constructed using paste
-      newCoef <- derivative[i]
-      newTerm <- paste("x", "^", i - 1, collapse = "", sep = "")
+      newTerm <- paste("x", "^", i - 1, sep = "")
     }
-    result <- append(result, paste(newCoef, "*", newTerm, collapse = "", sep = ""))
-
-    # inner grepl function (remove zero terms) followed by concatenation
-    paste(result[!grepl("^0", result)], sep = "", collapse = "+")
+    result <- append(result, paste(newCoef, "*", newTerm, sep = ""))
   }
 
-  # remove 0 terms
-  # result[!grepl("^0",result)]
+  if (length(result) == 0) {
+    return("0")
+  }
 
-  # make a string
-  out <- paste(result[!grepl("^0", result)], sep = "", collapse = "+")
+  out <- paste(result, collapse = "+")
+  out <- gsub("\\+-", "-", out)
   return(out)
 }
 
