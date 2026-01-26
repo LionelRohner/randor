@@ -1,7 +1,6 @@
 
 # Construct derivative matrix ---------------------------------------------
 
-
 #' Construct a derivative matrix
 #'
 #' @param order The order of the polynomial.

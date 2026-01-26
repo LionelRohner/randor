@@ -5,8 +5,8 @@
 #' @return Vector of primes up to to-argument
 #' @export
 #'
-#' @examples primes_to_11 <- sieve_ov_Erathostenes(11)
-sieve_ov_Erathostenes <- function(to) {
+#' @examples primes_to_11 <- eratosthenes_sieve(11)
+eratosthenes_sieve <- function(to) {
   # Exceptions
   assertthat::assert_that(to >= 2,
     msg = "There are no primes below 2!!!"
@@ -57,7 +57,7 @@ sieve_ov_Erathostenes <- function(to) {
 #' @export
 #'
 #' @examples
-#' primes_to_100 <- sieve_ov_Erathostenes(100)
+#' primes_to_100 <- eratosthenes_sieve(100)
 #' get_circular_primes(primes_to_100)
 get_circular_primes <- function(primes) {
   # empty vector for output$

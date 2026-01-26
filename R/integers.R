@@ -20,10 +20,6 @@ get_digits <- function(x, base = 10) {
   return(ndigits)
 }
 
-# By taking 10 to the power of the number of digits of a number and dividing
-# by 10 we get the geometric sequence 1, 10 , 100 , 1000 etc
-
-
 #' Get powers of ten
 #'
 #' @param ndigits The number of digits.
@@ -49,8 +45,6 @@ get_powers_of_ten <- function(ndigits,
   }
   return(pwr_ten)
 }
-
-# Reverses the deconstruction of integers in digits.https://mathworld.wolfram.com/Concatenation.html
 
 #' Concatenate numbers
 #' Reverses the deconstruction of integers in digits.https://mathworld.wolfram.com/Concatenation.html
@@ -89,11 +83,11 @@ transform_to_base_ten <- function(x, base) {
 
 # Main functions ------------------------------------------------------
 
-# Combination of the function above plus one more step. We first get the number
-# of digits the integer x followed by its exponent. Then we reapply the previous
-# function but with another base, which is the integer itself
-
-# https://stackoverflow.com/questions/19764244/how-can-we-split-an-integer-number-into-a-vector-of-its-constituent-digits-in-r
+#' It is a combination of the above function with one more step. First, we find
+#' the number of digits in the integer x, followed by its exponent. Then, we
+#' apply the previous function again, but with a different base: the integer
+#' itself.
+#' https://stackoverflow.com/questions/19764244/how-can-we-split-an-integer-number-into-a-vector-of-its-constituent-digits-in-r
 
 
 #' Extract digits from a vector of numbers

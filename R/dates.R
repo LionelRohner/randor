@@ -8,7 +8,7 @@
 #' @export
 #'
 #' @examples
-#' calc_age(birth_date = "1989-01-24", target_date = "2009-01-21")
+#' calc_age(birth_date = "1987-02-24", target_date = "2009-01-21")
 calc_age <- function(birth_date, target_date, floor = TRUE) {
   # Convert dates to ymd
   birth_date <- lubridate::ymd(birth_date)
@@ -27,8 +27,3 @@ calc_age <- function(birth_date, target_date, floor = TRUE) {
     return(diff_years)
   }
 }
-
-calc_age(
-  birth_date = "1989-01-24",
-  target_date = "2009-01-21"
-)
