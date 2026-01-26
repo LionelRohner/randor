@@ -565,4 +565,3 @@ mean_estimate <- function(n,
   colnames(DF) <- c("Iterations", "Mean", "SD", "Min", "Max")
   return(DF)
 }
-
