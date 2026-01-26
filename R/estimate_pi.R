@@ -307,10 +307,10 @@ estimate_pi_resampled <- function(n,
 
 # MCMC-like Functions -----------------------------------------------------
 
-#' MCMC-like algorithm for pi estimation
-#' MCMC-like algorithm, but instead of using a hastings ratio, I used the accuracy measure,
-#' which kinda breaks the purpose of the MCMC, which is used when the true value is unknown.
-#' But heck, its just for fun, right.
+#' Metropolis-Hastings MCMC for pi estimation
+#' This function uses a Metropolis-Hastings MCMC algorithm to sample from the
+#' posterior distribution of the ratio of points within the unit circle.
+#' The prior is a beta distribution, and the proposal is a uniform distribution.
 #' @param nInit The number of initial points to generate for the prior distribution.
 #' @param samplingSize The number of samples to take for the prior distribution.
 #' @param nSD The number of points to generate for the standard deviation calculation.
@@ -320,58 +320,8 @@ estimate_pi_resampled <- function(n,
 #' @export
 #'
 #' @examples
-#' MCMC_Pi(nIter = 100)
-MCMC_Pi <- function(nInit = 1e6, samplingSize = 1e4, nSD = 1000, nIter) {
-  # 0.) initialize result vector and get a value for d
-  x <- rep(0, nIter)
-
-  d <- sd(calc_ratio(nInit, nSD, FALSE))
-
-  # 1.) create a prior distribution
-
-  # beta parameter from 1e6 ratios >> prior distribution params
-  thetaBetaMLE <- get_beta_dist(calc_ratio(nInit, samplingSize, FALSE))
-
-  # mean of beta distribution
-  meanBeta <- unname(1 / (1 + (thetaBetaMLE[2] / thetaBetaMLE[1])))
-
-  pbeta(meanBeta, shape1 = thetaBetaMLE[1], shape2 = thetaBetaMLE[2])
-
-  # 2.) Propose first move (start with mean of prior)
-  x[1] <- meanBeta
-
-  # 3.) Initiate loop
-
-  for (iter in 2:nIter) {
-    # 4.) propose a move with uniform proposal kernel
-    x[iter] <- runif(n = 1, min = x[iter - 1] - d / 2, max = x[iter - 1] + d / 2)
-
-    # 3.) Compute accuracy, accept move if accuracy is better else stay
-    current <- abs(approx_pi_resample(x[iter]) - pi)
-    previous <- abs(approx_pi_resample(x[iter - 1]) - pi)
-
-    if (current < previous) {
-      next
-    } else {
-      x[iter] <- x[iter - 1]
-    }
-  }
-  return(x)
-}
-
-#' Metropolis-Hastings-like algorithm for pi estimation
-#' Same as MCMC_Pi but with a real Hastings ratio.
-#' @param nInit The number of initial points to generate for the prior distribution.
-#' @param samplingSize The number of samples to take for the prior distribution.
-#' @param nSD The number of points to generate for the standard deviation calculation.
-#' @param nIter The number of iterations for the MCMC chain.
-#'
-#' @return A vector representing the MCMC chain.
-#' @export
-#'
-#' @examples
-#' MCMC_h_Pi(nIter = 100)
-MCMC_h_Pi <- function(nInit = 1e6, samplingSize = 1e4, nSD = 1000, nIter) {
+#' estimate_pi_mcmc(nIter = 100)
+estimate_pi_mcmc <- function(nInit = 1e6, samplingSize = 1e4, nSD = 1000, nIter) {
   # 0.) initialize result vector and get a value for d
   x <- rep(0, nIter)
 
@@ -443,22 +393,35 @@ accuracy_pi_estimate <- function(pi_estimate) {
 #' @examples
 #' scoring(0.05)
 scoring <- function(res) {
-  if (res > 0.1) {
-    return(0)
-  } else if (res > 0.01) {
-    return(1)
-  } else if (res > 0.001) {
-    return(2)
-  } else if (res > 0.0001) {
-    return(3)
-  } else if (res > 0.00001) {
-    return(4)
-  } else if (res > 0.000001) {
-    return(5)
-  } else {
-    return(6)
-  }
+  # Define the score boundaries and labels
+  breaks <- c(Inf, 0.1, 0.01, 0.001, 0.0001, 0.00001, 0.000001, -Inf)
+  labels <- c(0, 1, 2, 3, 4, 5, 6)
+
+  # Use cut to find the interval and return the corresponding score
+  # The labels are for intervals (lower, upper], right = FALSE changes this to [lower, upper)
+  # We want to score based on res > value, so we reverse the labels.
+  score <- cut(res, breaks = rev(breaks), labels = rev(labels), right = FALSE, include.lowest = TRUE)
+
+  # cut returns a factor, so convert to numeric
+  return(as.numeric(as.character(score)))
 }
+
+# Helper function to run pi estimation simulations
+# Not exported
+.run_pi_simulation <- function(n, nIter, type, samplingSize, outputLength, distr) {
+  # Choose the estimation function based on type
+  estimation_func <- if (type == "empirical") {
+    function() estimate_pi_empirical(n)
+  } else {
+    function() estimate_pi_resampled(n, samplingSize, outputLength, distr)
+  }
+
+  # Run the simulation nIter times and get accuracy
+  estimates <- replicate(nIter, accuracy_pi_estimate(estimation_func()))
+
+  return(estimates)
+}
+
 
 #' Test accuracy of pi estimation
 #' Compare time and score of accuracy. Not for MCMC as we only consider the last values.
@@ -491,32 +454,14 @@ test_accuracy <- function(n,
   message("Difference > 0.000001 : Score = 5")
   message("Difference < 0.000001 : Score = 6 \n")
 
+  # Get accuracy estimates from the simulation helper
+  accuracy_estimates <- .run_pi_simulation(n, nIter, type, samplingSize, outputLength, distr)
 
-  # create vector for accuracy measure
-  vecAccuracy <- c()
+  # Convert accuracies to scores
+  scores <- sapply(accuracy_estimates, scoring)
 
-  # loop for nIter
-  if (type == "empirical") {
-    message("Method : Empirical \n")
-    for (i in 1:nIter) {
-      estimate <- accuracy_pi_estimate(estimate_pi_empirical(n))
-      score <- scoring(estimate)
-      vecAccuracy <- c(vecAccuracy, score)
-    }
-  } else {
-    message("Method : Resampled \n")
-    for (i in 1:nIter) {
-      estimate <- accuracy_pi_estimate(estimate_pi_resampled(n,
-        samplingSize = samplingSize,
-        outputLength = outputLength,
-        distr = distr
-      ))
-      score <- scoring(estimate)
-      vecAccuracy <- c(vecAccuracy, score)
-    }
-  }
   # output formatting
-  DF <- data.frame(nIter, mean(vecAccuracy), sd(vecAccuracy), min(vecAccuracy), max(vecAccuracy))
+  DF <- data.frame(nIter, mean(scores), sd(scores), min(scores), max(scores))
   colnames(DF) <- c("Iterations", "Mean Score", "SD Score", "Min Score", "Max Score")
 
   message("Accuracy of the Pi Estimate: ")
@@ -543,25 +488,12 @@ mean_estimate <- function(n,
                           samplingSize = 1e4,
                           outputLength = 1e6,
                           distr = "beta") {
-  vecAccuracy <- c()
 
-  if (type == "empirical") {
-    for (i in 1:nIter) {
-      estimate <- accuracy_pi_estimate(estimate_pi_empirical(n))
-      vecAccuracy <- c(vecAccuracy, estimate)
-    }
-  } else {
-    for (i in 1:nIter) {
-      estimate <- accuracy_pi_estimate(estimate_pi_resampled(n,
-        samplingSize = samplingSize,
-        outputLength = outputLength,
-        distr = distr
-      ))
-      vecAccuracy <- c(vecAccuracy, estimate)
-    }
-  }
+  # Get accuracy estimates from the simulation helper
+  accuracy_estimates <- .run_pi_simulation(n, nIter, type, samplingSize, outputLength, distr)
+
   # output formatting
-  DF <- data.frame(nIter, mean(vecAccuracy), sd(vecAccuracy), min(vecAccuracy), max(vecAccuracy))
+  DF <- data.frame(nIter, mean(accuracy_estimates), sd(accuracy_estimates), min(accuracy_estimates), max(accuracy_estimates))
   colnames(DF) <- c("Iterations", "Mean", "SD", "Min", "Max")
   return(DF)
 }
