@@ -2,7 +2,12 @@
 % Please edit documentation in R/integers.R
 \name{extract_digits}
 \alias{extract_digits}
-\title{Extract digits from a vector of numbers}
+\title{It is a combination of the above function with one more step. First, we find
+the number of digits in the integer x, followed by its exponent. Then, we
+apply the previous function again, but with a different base: the integer
+itself.
+https://stackoverflow.com/questions/19764244/how-can-we-split-an-integer-number-into-a-vector-of-its-constituent-digits-in-r
+Extract digits from a vector of numbers}
 \usage{
 extract_digits(x_vec)
 }
@@ -13,6 +18,11 @@ extract_digits(x_vec)
 A vector of digits.
 }
 \description{
+It is a combination of the above function with one more step. First, we find
+the number of digits in the integer x, followed by its exponent. Then, we
+apply the previous function again, but with a different base: the integer
+itself.
+https://stackoverflow.com/questions/19764244/how-can-we-split-an-integer-number-into-a-vector-of-its-constituent-digits-in-r
 Extract digits from a vector of numbers
 }
 \examples{
